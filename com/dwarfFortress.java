@@ -1,5 +1,3 @@
-package first;
-
 import java.util.*;
 import java.io.*;
 
@@ -49,8 +47,11 @@ class Dwarf extends Creature{
    } //returnWool function
    
    public void shearAlpaca(Alpaca alpaca) {
-      alpaca.beingSheared();
-      increaseWool();
+      if (!alpaca.isSheared) {
+         alpaca.beingSheared();
+         increaseWool();
+      };
+
    } //function shear
    
    public void gotDamage(int damage) {
