@@ -36,8 +36,8 @@ class Dwarf extends Creature{
       return this.health;
    }//showHealth function
    
-   public void increaseWool() {
-      this.disposableWool += 1;
+   public void increaseWool(int howMuchIncrease) {
+      this.disposableWool += howMuchIncrease;
    } //inreaseWool function
    
    public int returnWool() {
@@ -48,8 +48,9 @@ class Dwarf extends Creature{
    
    public void shearAlpaca(Alpaca alpaca) {
       if (!alpaca.isSheared) {
+         increaseWool(alpaca.quantityOfWool);
          alpaca.beingSheared();
-         increaseWool();
+
       };
 
    } //function shear
@@ -61,7 +62,7 @@ class Dwarf extends Creature{
    public void attack(Hammer hammer, Dwarf enemy) {
    hammer.useHammer();
    enemy.gotDamage(hammer.damage);
-   if (enemy.health <= 0) {
+   if (enemy.health <= 5) {
       enemy.isDead = true;
       this.disposableWool += enemy.returnWool();
    } //if enemy health
@@ -72,6 +73,12 @@ class Dwarf extends Creature{
 class Alpaca extends Creature {
    String description = "A large domestic animal with a long neck.  It has been bred for its valuable hair";
    boolean isSheared = false;
+   int quantityOfWool;
+   
+   Alpaca(int wool) {
+      this.quantityOfWool = wool;
+   } //Alpaca constructor
+   
    
    public void attack(Creature enemy) {
       enemy.health -= 1;
@@ -79,6 +86,7 @@ class Alpaca extends Creature {
    
    public void beingSheared() {
       this.isSheared = true;
+      this.quantityOfWool = 0;
    } //function beingSheared
 } //class Alpaca
 
@@ -99,10 +107,10 @@ class Hammer {
 
 public class dwarfFortress{
    public static void main(String[] args) throws FileNotFoundException {
-      Dwarf ouzie = new Dwarf("ouzie", 25);
-      Dwarf uozie = new Dwarf("uozie", 39);
-      Alpaca ouzieAlpaca = new Alpaca();
-      Alpaca uozieAlpaca = new Alpaca();
+      Dwarf ouzie = new Dwarf("ouzie", 100);
+      Dwarf uozie = new Dwarf("uozie", 141);
+      Alpaca ouzieAlpaca = new Alpaca(7);
+      Alpaca uozieAlpaca = new Alpaca(11);
       Hammer ouzieHammer = new Hammer();
       Hammer uozieHammer = new Hammer();
       
@@ -122,6 +130,7 @@ public class dwarfFortress{
          System.out.println("(ouzie health: " + ouzie.showHealth() + " uozie health: " + uozie.showHealth() + ")");
       }
       
+         uozie.attack(uozieHammer, ouzie);
       
       System.out.println("until one of them is dead, and other get " + uozie.disposableWool + " units of wool");
       
