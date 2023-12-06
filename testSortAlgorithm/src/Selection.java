@@ -5,11 +5,11 @@ public class Selection extends SortingTemplate{
         for (int i = 0; i < n; i++) {
             int min = i;
             for (int j = i+1; j < n; j++) {
-                if (a[min] > a[j]) {
+                if (a[j] < a[min]) {
                     min = j;
                 }//if less a[j]
-                exch(a, i, min);
             }//for int j
+            exch(a, i, min);
         }//for int i
     }//public static sort
 
