@@ -12,8 +12,8 @@ class SelectionTest {
 
     @org.junit.jupiter.api.Test
     void testBasicSort() {
-        double[] basicList = {5, 9, 1, 0, 15};
-        double[] basicListModel = {0, 1, 5, 9, 15};
+        double[] basicList = {5, 9, 1, 0, 15, -800710432};
+        double[] basicListModel = {-800710432, 0, 1, 5, 9, 15};
         SelectionSort.sort(basicList);
         assertArrayEquals(basicListModel, basicList);
     }
