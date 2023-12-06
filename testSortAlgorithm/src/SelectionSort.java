@@ -1,4 +1,4 @@
-public class Selection extends SortingTemplate{
+public class SelectionSort extends SortingTemplate{
 
     public static void sort(double[] a) {
         int n = a.length;
@@ -14,7 +14,6 @@ public class Selection extends SortingTemplate{
     }//public static sort
 
     public static void main(String[] args) {
-        double[] data = {5, 4, 2, 0, 1};
-        sort(data);
+        System.out.println("executing");
     }
 }
