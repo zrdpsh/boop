@@ -1,23 +1,14 @@
-import org.junit.jupiter.api.Test;
-//import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SelectionTest {
 
-    @org.junit.jupiter.api.BeforeEach
-    void setUp() {
-        SelectionSort selectionClass = new SelectionSort();
-    }
-
-    @org.junit.jupiter.api.AfterEach
-    void tearDown() {
-        SelectionSort selectionClass = null;
-    }
-
+    public static Logger logger = Logger.getLogger(SelectionTest.class.getName());
 
     @org.junit.jupiter.api.Test
     void testBasicSort() {
@@ -44,7 +35,7 @@ class SelectionTest {
     }
 
     @org.junit.jupiter.api.Test
-    void testIdenticalSort() {
+    void testIdenticalValuesSort() {
         double[] basicList = {2,2,0,1,0,2,4,0,0};
         double[] basicListModel = {0,0,0,0,1,2,2,2,4};
         SelectionSort.sort(basicList);
@@ -63,12 +54,14 @@ class SelectionTest {
 
     public static double[] generateList() {
         Random rand = new Random();
+
 //        int arrayLength = Math.abs(rand.nextInt());
         int arrayLength = rand.nextInt(200000);
         double[] unlimitedTestArray = new double[arrayLength];
         for (int i = 0; i < arrayLength; i++) {
-            unlimitedTestArray[i] = 1000000*rand.nextDouble();
+            unlimitedTestArray[i] = 1000000*(rand.nextDouble()*(Math.pow(-1, rand.nextInt())));
         }
+        logger.info("Random sequence of positive and negative numbers is generated");
         return unlimitedTestArray;
     }
 }
