@@ -53,7 +53,6 @@ class SelectionTest {
     public static double[] generateList() {
         Random rand = new Random();
 
-//        int arrayLength = Math.abs(rand.nextInt());
         int arrayLength = rand.nextInt(200000);
         double[] unlimitedTestArray = new double[arrayLength];
         for (int i = 0; i < arrayLength; i++) {
