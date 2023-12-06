@@ -1,3 +1,5 @@
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SelectionTest {
@@ -12,5 +14,13 @@ class SelectionTest {
 
     @org.junit.jupiter.api.Test
     void sort() {
+    }
+
+    @Test
+    void testSort() {
+    }
+
+    @Test
+    void main() {
     }
 }
