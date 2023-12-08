@@ -26,4 +26,8 @@ public class WriteToFile {
          }//try catch exception
       } //for loop inside function
    } //bunch of files function
+   
+   public static double sumOfFileContents(int num1, int num2, String pathToFiles) {
+   
+   } //sumOfFilecontents function
 }//Write to File class
