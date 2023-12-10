@@ -1,5 +1,3 @@
-import org.junit.jupiter.api.function.Executable;
-
 import java.io.*;
 // import static java.nio.file.StandartOpenOption; 
 import java.lang.Math;
@@ -8,12 +6,14 @@ import java.util.logging.Level;
 import java.util.Random;
 
 public class WriteToFile {
+   public static String PATHNAME = "C:\\Users\\Admin\\Documents\\J_files\\boop\\boop\\working with files\\";
+
    public static void main(String[] args) throws FileNotFoundException {
       Random rand = new Random();
       createBunchOfFiles(10, 3);
-      double a = sumTheContents("C:\\Users\\Admin\\Documents\\J_files\\boop\\boop\\working with files\\", rand.nextInt(10)+1, rand.nextInt(10)+1);
+      double a = sumTheContents(PATHNAME, rand.nextInt(10)+1, rand.nextInt(10)+1);
       System.out.println(a);
-      deleteTheFiles("C:\\Users\\Admin\\Documents\\J_files\\boop\\boop\\working with files\\");
+      deleteTheFiles(PATHNAME);
    } //public static void main
    
    public static void createBunchOfFiles(int howMuchFiles, int howMuchContent) {
@@ -37,7 +37,7 @@ public class WriteToFile {
       logger.log(Level.INFO, loggerMessage);
    } //bunch of files function
 
-   public static double sumTheContents(String pathToFiles, int... nums) throws FileNotFoundException{
+   public static double sumTheContents(String pathToFiles, int... nums) throws FileNotFoundException  {
 
       Logger logger = Logger.getLogger(WriteToFile.class.getName());
       double resultingWholeSum = 0;
@@ -81,7 +81,7 @@ public class WriteToFile {
       return resultingSum;
    }//sum of three numbers
 
-   static String[] parseTheStringFromFile(BufferedReader buffer) throws IOException {
+   public static String[] parseTheStringFromFile(BufferedReader buffer) throws IOException {
       Logger logger = Logger.getLogger(WriteToFile.class.getName());
       String linesFromTheFile = "";
 
@@ -90,8 +90,12 @@ public class WriteToFile {
             linesFromTheFile += lineRead;
             linesFromTheFile += " ";
          }
+      } catch (FileNotFoundException e) {
+         logger.log(Level.SEVERE, "File wasn't found", e);
+         throw e;
       } catch (Exception e) {
          logger.log(Level.INFO, e.toString());
+         throw e;
       }//try catch block
 
       String loggerMessage = String.format("Inside the parseTheStringFromFile contents of file are %s", linesFromTheFile);

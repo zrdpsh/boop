@@ -1,0 +1,10 @@
+Lorelei 57 23
+Isabella 65 230
+Robert 78 159
+Esp 59 700
+David 19 300
+Alice 45 89
+Andrew 100 11
+PaulS 84 65
+Helene 153 82
+Eugene 88 88

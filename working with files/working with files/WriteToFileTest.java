@@ -11,7 +11,7 @@ class WriteToFileTest {
 
     @org.junit.jupiter.api.Test
     void parseTheStringFromFile() throws IOException {
-        BufferedReader buffer = new BufferedReader(new FileReader(new File(pathToFiles+"31.txt")));
+        BufferedReader buffer = new BufferedReader(new FileReader(new File(pathToFiles+ "working with files\\31.txt")));
         String[] testArray = "Some numbers expected to be out there".split(" ");
         Assertions.assertArrayEquals(testArray, WriteToFile.parseTheStringFromFile(buffer));
     }
