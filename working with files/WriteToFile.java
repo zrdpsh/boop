@@ -1,14 +1,14 @@
-import java.nio.file.*;
+import org.junit.jupiter.api.function.Executable;
+
 import java.io.*;
 // import static java.nio.file.StandartOpenOption; 
 import java.lang.Math;
-import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.Random;
 
 public class WriteToFile {
-   public static void main(String[] args) {
+   public static void main(String[] args) throws FileNotFoundException {
       Random rand = new Random();
       createBunchOfFiles(10, 3);
       double a = sumTheContents("C:\\Users\\Admin\\Documents\\J_files\\boop\\boop\\working with files\\", rand.nextInt(10)+1, rand.nextInt(10)+1);
@@ -37,20 +37,25 @@ public class WriteToFile {
       logger.log(Level.INFO, loggerMessage);
    } //bunch of files function
 
-   public static double sumTheContents(String pathToFiles, int... nums) {
+   public static double sumTheContents(String pathToFiles, int... nums) throws FileNotFoundException{
 
       Logger logger = Logger.getLogger(WriteToFile.class.getName());
       double resultingWholeSum = 0;
 
       for (int i = 0; i < nums.length; i++) {
-         String fileName = pathToFiles+String.format("%s.txt", nums[i]);
+         String fileName = pathToFiles + String.format("%s.txt", nums[i]);
          try (FileReader fr = new FileReader(new File(fileName))) {
-               resultingWholeSum += sumOfReadNumbers(fr);
-               String loggerMessage = String.format("After the contents of the %s added, the resulting sum is %s", fileName, resultingWholeSum);
-               logger.log(Level.INFO, loggerMessage);
+            resultingWholeSum += sumOfReadNumbers(fr);
+            String loggerMessage = String.format("After the contents of the %s added, the resulting sum is %s", fileName, resultingWholeSum);
+            logger.log(Level.INFO, loggerMessage);
+         } catch (FileNotFoundException e) {
+            logger.log(Level.SEVERE, "File wasn't found", e);
+            throw e;
+         } catch (IOException e) {
+            logger.log(Level.SEVERE, "System cannot resolve the path", e);
          } catch (Exception e) {
             logger.log(Level.SEVERE, "Contents of files didn't summed", e);
-         } // try catch block
+         }// try catch block
       } //for loop inside sumTheContents
 
       return resultingWholeSum;
@@ -76,13 +81,9 @@ public class WriteToFile {
       return resultingSum;
    }//sum of three numbers
 
-   private static String[] parseTheStringFromFile(BufferedReader buffer) throws IOException {
+   static String[] parseTheStringFromFile(BufferedReader buffer) throws IOException {
       Logger logger = Logger.getLogger(WriteToFile.class.getName());
       String linesFromTheFile = "";
-//      while (buffer.readLine()!=null) {
-//         lineFromTheFile += buffer.readLine();
-//         lineFromTheFile += " ";
-//      } //while buffer != null
 
       try {
          for (String lineRead = buffer.readLine(); lineRead != null; lineRead = buffer.readLine()) {
