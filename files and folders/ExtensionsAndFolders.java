@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,23 +24,32 @@ public class ExtensionsAndFolders {
 
         File rootFolder = new File(pathToRootFolder);
 
-        ArrayList<File>[] namesFromIteration = new ArrayList<File>[];
+        File[] filesFromIteration = listOfFiles.toArray(new File[listOfFiles.size()]);
+        File[] foldersFromIteration = listOfFiles.toArray(new File[listOfFiles.size()]);
 
         File[] filesInFolder = rootFolder.listFiles();
 
         for (int i = 0; i < depth; i++) {
 
-            ArrayList[] tmpRes = returnNamesFromGivenFolder(filesInFolder, fileExtension, listOfFiles, listOfFolders);
+            ArrayList[] tmpRes = returnNamesFromGivenFolder(filesInFolder, fileExtension);
+            logger.log(Level.INFO, "after looping through the folder tmpRes is ", tmpRes.toString());
 
-            listOfFiles.addAll();
+            filesFromIteration = tmpRes[0].addAll(); Arrays.asList(file.listFiles());
+            foldersFromIteration = tmpRes[1].addAll();
+
+            filesInFolder = tmpRes[0].addAll(); Arrays.asList(file.listFiles());
+
+
         }
 
         ArrayList[] result = {listOfFiles, listOfFolders};
         return result;
     }
 
-    private static ArrayList[] returnNamesFromGivenFolder(File[] listOfFilenames, String fileExtensionNeeded,
-                                                          ArrayList<File> listOfFiles, ArrayList<File> listOfFolders) {
+    private static ArrayList[] returnNamesFromGivenFolder(File[] listOfFilenames, String fileExtensionNeeded) {
+
+        ArrayList<File> listOfFiles = new ArrayList<File>();
+        ArrayList<File> listOfFolders = new ArrayList<File>();
 
         for (File f: listOfFilenames) {
             if (getExtension(f) == fileExtensionNeeded) listOfFiles.add(f);
@@ -48,6 +58,7 @@ public class ExtensionsAndFolders {
         }
         return new ArrayList[]{listOfFiles, listOfFolders};
     }
+
 
     private static String getExtension(File f) {
         String fileName = f.getName();

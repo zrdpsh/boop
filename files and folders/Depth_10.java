@@ -1,3 +1,7 @@
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Depth_10
 {
    public static void main(String[] args)
@@ -15,7 +19,7 @@ public class Depth_10
      /* запустить цикл на 10 повторений - нужная глубина вложенности */
         
         File[] expandCopy = expand.toArray(new File[expand.size()]);
-     /* создать копию массива, котором храним названия папок, вызвав .toArray у ArrayList. 
+     /* создать копию массива, котором храним названия папок, вызвав .toArray у ArrayList. //
       В качестве аргумента передаём массив нужного типа и нужной длины. Длину извлекаем с помощью .size() 
       В результате получится массив типа File, в который записаны все названия папок на текущем уровне*/   
         
