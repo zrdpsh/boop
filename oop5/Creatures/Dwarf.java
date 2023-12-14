@@ -6,7 +6,7 @@ public class Dwarf extends Creature{
    private static Weapon handWeapon = new Hammer(5, 105);
    private static Weapon distanceWeapon = new Longbow(5, 105, 5);
    private String name;
-   private Alpaca[] alpacasHerd = new Alpaca[10]; //drawf can own up to 10 animals
+   private Alpaca[] alpacasHerd = new Alpaca[10];
    private int alpacasCounter = 0;
 
    
@@ -31,7 +31,7 @@ public class Dwarf extends Creature{
    }
    
 /*------attack methods-------*/   
-   public void attack(Creature enemy, int distance) { //attack with bare hands
+   public void attack(Creature enemy, int distance) { 
 	   if (distance >= 1) {
 		   enemy.gotDamage(this.damage);
 		} else {
@@ -39,17 +39,14 @@ public class Dwarf extends Creature{
 		}			
    }
 
-   public void attack(Creature enemy, int distance, int useWeapon) { //attack with some weapon
-      if (distance <= 1 && useWeapon == 1) {
+   public void attack(Creature enemy, int distance, int useWeapon) { 
+         if (distance <= 1 && useWeapon == 1) {
          useWeapon(this.handWeapon, enemy);
       } else if (useWeapon == 2) {
          useWeapon(this.distanceWeapon, enemy);
       } else return;
 
-//       if ((distance <= 1 && weapon.getKindOfWeapon() == 1) || weapon.getKindOfWeapon() == 2) {
-//          useWeapon(weapon, enemy);
-//     }
-   } //if enemy health
+   } 
    
    public void tameTheAlpaca(Alpaca newAlpaca) {
 	   if (alpacasCounter < alpacasHerd.length) {
