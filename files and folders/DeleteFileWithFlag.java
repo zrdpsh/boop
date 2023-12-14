@@ -6,7 +6,8 @@ import java.util.logging.Logger;
 
 public class DeleteFileWithFlag {
     public static void main(String[] args) {
-
+        Logger logger = Logger.getLogger(ExtensionsAndFolders.class.getName());
+        logger.log(Level.INFO, (deleteFilesWithFlag("TestFolderForDeleting")).toString());
     }
 
     public static Boolean deleteFilesWithFlag(String folderName) {
@@ -21,6 +22,7 @@ public class DeleteFileWithFlag {
                 if (f.isDirectory()) return false;
                 f.delete();
             }
+            indexOfFiles.delete();
         } catch (Exception e) {
             logger.log(Level.INFO, "Smth wrong in the loop");
             e.printStackTrace();
