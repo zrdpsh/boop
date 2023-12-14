@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class ExtensionsAndFolders {
 
     public static void main(String[] args) throws FileNotFoundException  {
         Logger logger = Logger.getLogger(ExtensionsAndFolders.class.getName());
-        logger.log(Level.INFO, (returnFilesAndFolderNames("Yosemite", "srt", false)).toString());
+        logger.log(Level.INFO, (returnFilesAndFolderNames("Yosemite", "srt", true)).toString());
     }
 
     public static ArrayList[] returnFilesAndFolderNames(String pathToRootFolder, String fileExtension, Boolean inspectDepth) throws FileNotFoundException {
@@ -23,7 +24,7 @@ public class ExtensionsAndFolders {
         ArrayList<File> resultingListOfFolders = new ArrayList<File>();
 
         int depth = 1;
-        if (inspectDepth) depth = 2;
+        if (inspectDepth) depth = 3;
         logger.log(Level.INFO, String.format("Inspection depth is %s", depth));
 
         File[] rootFolder = (new File(pathToRootFolder)).listFiles();
@@ -42,8 +43,8 @@ public class ExtensionsAndFolders {
 
             ArrayList<File> filesInTheNextLevelOfDepth = new ArrayList<>();
 
-            for(File f: tmpRes[2]) {
-                filesInTheNextLevelOfDepth.add(f);
+            for(File f: tmpRes[1]) {
+                filesInTheNextLevelOfDepth.addAll(Arrays.asList(f.listFiles()));
             }
 
             rootFolder = filesInTheNextLevelOfDepth.toArray(new File[filesInTheNextLevelOfDepth.size()]);
@@ -68,8 +69,10 @@ public class ExtensionsAndFolders {
         for (File f: listOfFilenames) {
             logger.log(Level.INFO, String.format("current file is %s", f.getName()));
             logger.log(Level.INFO, String.format("from getExtension_m(f) we get %s", getExtension_m(f)));
-
-            if (getExtension_m(f).equalsIgnoreCase(fileExtensionNeeded)) listOfFiles.add(f);
+            String tmp = getExtension_m(f);
+            if (tmp != null) {
+                if (tmp.equalsIgnoreCase(fileExtensionNeeded)) listOfFiles.add(f);
+            }
             if (f.isDirectory()) listOfFolders.add(f);
             assert f.isDirectory() || f.isFile();
         }
@@ -78,6 +81,7 @@ public class ExtensionsAndFolders {
         result[0] = listOfFiles.toArray((new File[listOfFiles.size()]));
         result[1] = listOfFolders.toArray((new File[listOfFolders.size()]));
 
+        logger.log(Level.INFO, "returnNamesFromGivenFolder executed");
         return result;
     }
 
