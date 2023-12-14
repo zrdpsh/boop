@@ -27,8 +27,6 @@ public class DeleteFileWithFlag {
             logger.log(Level.INFO, "Smth wrong in the loop");
             e.printStackTrace();
             throw e;
-        } finally {
-
         }
         return true;
     }
