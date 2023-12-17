@@ -2,6 +2,7 @@ import java.io.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 
@@ -17,10 +18,34 @@ public class WorkingWithZip {
         Logger logger = Logger.getLogger(WorkingWithZip.class.getName());
         int[] rs = {1, 0};
 
+        ZipOutputStream zipOtpt = new ZipOutputStream(new FileOutputStream(nameOfTheArchive));
+
+        for (String fileName : namesOfTheFiles ) {
+            zipFile(zipOtpt, fileName);
+            logger.log(Level.INFO, String.format("%s is written to archive", fileName));
+        }//for fileName in namesOfTheFiles
+
         ZipOutputStream zo =  new ZipOutputStream(new FileOutputStream(new File(nameOfTheArchive)));
 
 
         return rs;
+    }
+
+    public static void zipFile(ZipOutputStream zpOpStr, String fileName) throws IOException {
+        zpOpStr.putNextEntry(new ZipEntry(fileName));
+
+        FileInputStream filInpStr = new FileInputStream(new File(fileName));
+
+        byte[] buffer = new byte[4092];
+        int byteCount = 0;
+
+        while((byteCount = filInpStr.read(buffer)) != -1) {
+            zpOpStr.write(buffer, 0, byteCount);
+            System.out.flush();
+        }
+
+        filInpStr.close();
+        zpOpStr.closeEntry();
     }
 
 
