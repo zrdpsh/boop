@@ -17,41 +17,51 @@ public class WorkingWithZip {
     public static int[] zipGivenFiles(String nameOfTheArchive, String[] namesOfTheFiles) throws IOException {
         Logger logger = Logger.getLogger(WorkingWithZip.class.getName());
         int[] rs = {1, 0};
-
-        ZipOutputStream zipOtpt = new ZipOutputStream(new FileOutputStream(nameOfTheArchive));
-
+/*-----------------what this line do ?----------------*/
+        ZipOutputStream zipOtPt = new ZipOutputStream(new FileOutputStream(nameOfTheArchive));
+/*-----------------what this line do ?----------------*/
         for (String fileName : namesOfTheFiles ) {
-            zipFile(zipOtpt, fileName);
+/*-----------------what this line do ?----------------*/
+            zipFile(zipOtPt, fileName);
+/*-----------------what this line do ?----------------*/
             logger.log(Level.INFO, String.format("%s is written to archive", fileName));
         }//for fileName in namesOfTheFiles
 
         ZipOutputStream zo =  new ZipOutputStream(new FileOutputStream(new File(nameOfTheArchive)));
+/*-----------------what this line do ?----------------*/
 
 
         return rs;
     }
 
-    public static void zipFile(ZipOutputStream zpOpStr, String fileName) throws IOException {
-        zpOpStr.putNextEntry(new ZipEntry(fileName));
-
+    public static void zipFile(ZipOutputStream zpOtPtStr, String fileName) throws IOException {
+        zpOtPtStr.putNextEntry(new ZipEntry(fileName));
+/*-----------------what this line do ?----------------*/
         FileInputStream filInpStr = new FileInputStream(new File(fileName));
-
+/*-----------------what this line do ?----------------*/
         byte[] buffer = new byte[4092];
+/*-----------------what this line do ?----------------*/
         int byteCount = 0;
-
+/*-----------------what this line do ?----------------*/
         while((byteCount = filInpStr.read(buffer)) != -1) {
-            zpOpStr.write(buffer, 0, byteCount);
+/*-----------------what this line do ?----------------*/
+            zpOtPtStr.write(buffer, 0, byteCount);
+/*-----------------what this line do ?----------------*/
             System.out.flush();
+/*-----------------what this line do ?----------------*/
         }
 
         filInpStr.close();
-        zpOpStr.closeEntry();
+/*-----------------what this line do ?----------------*/
+        zpOtPtStr.closeEntry();
+/*-----------------what this line do ?----------------*/
     }
 
 
-    public static String[] createBunchOfFiles(int howMuchFiles, int howMuchContent) {
+    public static String[] createBunchOfFiles(int howMuchFiles, int howMuchContent) throws IOException {
         Logger logger = Logger.getLogger(WorkingWithZip.class.getName());
         String[] result = new String[howMuchFiles];
+        logger.log(Level.INFO, "Startin' creating bunch of files inside bunchOfFiles");
         for (int i = 1; i <= howMuchFiles; i++) {
             String name = String.format("%s.txt", i);
             File nfile = new File(name);
@@ -60,15 +70,15 @@ public class WorkingWithZip {
                     int someRandomNumber = (int)(Math.random()*10);
                     bw.write(""+someRandomNumber);
                     bw.newLine();
-//               String loggerMessage = String.format("%s added to a file number %s", someRandomNumber, i);
-//               logger.log(Level.INFO, loggerMessage);
+                    logger.log(Level.INFO, String.format("%s added to file named %s", someRandomNumber, name));
                 }//loop j to write random numbers
                 result[i] = name;
             } catch (Exception e) {
                 logger.log(Level.INFO, "There is the exception", e);
+                throw e;
             }//try catch exception
         } //for loop inside function
-        String loggerMessage = String.format("%s files created", howMuchFiles);
+        String loggerMessage = String.format("%s files created with %s numbers in each", howMuchFiles, howMuchContent);
         logger.log(Level.INFO, loggerMessage);
         return result;
     } //bunch of files function
