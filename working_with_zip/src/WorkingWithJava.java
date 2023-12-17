@@ -10,6 +10,7 @@ public class WorkingWithZip {
 
         String[] tstString = createBunchOfFiles(10, 3);
         int[] zipResult = zipGivenFiles("tst.zip", tstString);
+        System.out.println(String.format("Function worked %s", zipResult[1] == 0? "FINE" : "BAD"));
     }
 
     public static int[] zipGivenFiles(String nameOfTheArchive, String[] namesOfTheFiles) throws IOException {
