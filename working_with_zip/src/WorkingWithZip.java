@@ -53,31 +53,32 @@ public class WorkingWithZip {
 /* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
 
         Map<String, byte[]> zipEntryMap = link_FileName_With_ItsContents(pathZip);
-/* ---- link_FileName_with_ItsContents возвращает словарь, где каждому из им */
+/* ---- link_FileName_with_ItsContents возвращает словарь, где каждому из им файлов из существующего архива сопоставлено
+* ----- его содержимое в виде строки байтов*/
         FileOutputStream fileOutputStream =  new FileOutputStream(pathZip);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- оборачиваем путь до архива в FileOutputStream */
         ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- оборачиваем FileOutputStream в ZipOutputStream - чтобы можно было в него записывать*/
 
         zipEntryMap.forEach((zipEntryName, bytes) -> {
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- здесь в цикле для каждой пары <название-строка байтов> вызову функцию, чтобы скопировать их в новый архив */
             logger.log(Level.INFO, zipEntryName+" "+bytes.toString());
             try {
                 copyExistingFile_ToTheNewArchive(pathZip, bytes, zipEntryName, zipOutputStream);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- отдельный файл из старого архива добавляется в новый архив с тем же именем */
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
 
         zipOutputStream.closeEntry();
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- закрываем запись в архив - иначе ошибка */
 
         for (String fileName: namesOfTheFiles) {
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- в цикле перебираем все новые файлы, предназначенные для записи, и добавляем каждый из них архив из предыдущего цикла*/
             try {
                 addNewFileInOpenedArchive(fileName, pathZip, zipOutputStream);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- добавляем отдельный файл в новый архив. При этом поток на запись будет открываться заново */
             } catch (java.util.zip.ZipException e) {
                 logger.log(Level.INFO, String.format("%s is already in archive", fileName));
             } catch (Exception e) {
@@ -87,67 +88,69 @@ public class WorkingWithZip {
         }
 
         zipOutputStream.close();
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- закрываем запись после добавления новых файлов */
 
     }
         private static Map<String, byte[]> link_FileName_With_ItsContents(String pathZip) throws IOException {
         Logger logger = Logger.getLogger(WorkingWithZip.class.getName());
 
         Map<String, byte[]> zipEntryMap = new HashMap<>();
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- создаём пустой словарь под пары <название - содержимое в байтах> */
         byte[] buffer = new byte[1024];
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- создаём временный байтовый массив для копирования содержимого файла */
         try {
             FileInputStream fileInputStream = new FileInputStream(pathZip);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- оборачиваем путь до архива в FileOutputStream */
             ZipInputStream zipInputStream = new ZipInputStream(fileInputStream);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- оборачиваем FileOutputStream в ZipOutputStream - чтобы можно было в него записывать*/
             ZipEntry zipEntry;
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- инициализируем объект, с помощью которое отдельный файл добавляется в архив */
 
             while((zipEntry = zipInputStream.getNextEntry())!= null){
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- здесь одновременно:
+*        - считаем файл из архива в перменную ZipEntry
+*        - сравниваем с null. если null - значит дошли до конца архива */
                 ByteArrayOutputStream builder = new ByteArrayOutputStream();
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- создаём объект для работы потоками байтов */
                 int end = zipInputStream.read(buffer);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- первоначально прочитываем порцию байт из архивного файла*/
                 while(end > 0){
                     builder.write(buffer, 0, end);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- пока файл не прочитан до конца, добавляем байты в поток */
                     end = zipInputStream.read(buffer);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- прочитываем следующую порцию байт */
                 }
                 zipEntryMap.put(zipEntry.getName(), builder.toByteArray());
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- превращаем поток байтов в массив и записываем в словарь вместе с именем файла  */
             }
         }catch(IOException ex){
             logger.log(Level.INFO, "Exception while trying to write byte array in side link Filename with its Contents");
     }
         return zipEntryMap;
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- возвращаем пары <название - массив байтов> */
     }
 
     private static void copyExistingFile_ToTheNewArchive(String pathZip, byte[] bytes, String zipEntryName, ZipOutputStream zipOutputStream) throws Exception{
         ZipEntry zipEntry2nd = new ZipEntry(zipEntryName);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- создаем новый ZipEntry из имени файла */
         zipEntry2nd.setSize(bytes.length);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- устанавливаем значение, равное длине файла в байтах */
         zipOutputStream.putNextEntry(new ZipEntry(zipEntryName));
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- открываем запись файла в архив */
         zipOutputStream.write(bytes);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- записываем сам файл */
     }
 
     private static void addNewFileInOpenedArchive(String fileToBeAdded, String archiveToAddAFile, ZipOutputStream zos) throws IOException {
         Logger logger = Logger.getLogger(WorkingWithZip.class.getName());
 
         Path pathToAddedFile = Paths.get((new File(fileToBeAdded)).getPath());
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- получаем абсолютный путь до нового файла, в который будем добавлять в архив */
         try {
             zos.putNextEntry(new ZipEntry((new File(fileToBeAdded)).getPath()));
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- открываем запись файла в архив */
             Files.copy(pathToAddedFile, zos);
-/* ---- получаем абсолютный путь до архива, в который будем добавлять файл */
+/* ---- копируем содержимое файла */
         } catch (Exception e) {
             logger.log(Level.INFO, "Exception occured while running addNewFileInOpenedArchive");
             throw e;
