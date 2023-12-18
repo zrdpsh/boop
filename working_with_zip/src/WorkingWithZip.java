@@ -31,7 +31,9 @@ public class WorkingWithZip {
 
         try {
             addFilesToArchive(NAMEOFARCHIVE, files);
-/* ---- собственно, добавляем тестовые файлы из createBunchOfFiles в только что созданный архив */
+/* ---- собственно, добавляем тестовые файлы из createBunchOfFiles в только что созданный архив
+*  ---- идея в том, чтобы прочитать файлы из имеющегося архива -> открыть на запись новый -> добавить в него и старые, и новые файлы вместе
+* ----- т.е мы не добавляем, а перезаписываем с новыми файлами */
         } catch (Exception e) {
             logger.log(Level.INFO, "Exception happened while calling Files to Archive");
             throw e;
@@ -54,14 +56,14 @@ public class WorkingWithZip {
 
         Map<String, byte[]> zipEntryMap = link_FileName_With_ItsContents(pathZip);
 /* ---- link_FileName_with_ItsContents возвращает словарь, где каждому из им файлов из существующего архива сопоставлено
-* ----- его содержимое в виде строки байтов*/
+* ----- его содержимое в виде массива байтов*/
         FileOutputStream fileOutputStream =  new FileOutputStream(pathZip);
 /* ---- оборачиваем путь до архива в FileOutputStream */
         ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);
-/* ---- оборачиваем FileOutputStream в ZipOutputStream - чтобы можно было в него записывать*/
+/* ---- оборачиваем FileOutputStream в ZipOutputStream - архив представляется в виде объекта, с которым может работать java*/
 
         zipEntryMap.forEach((zipEntryName, bytes) -> {
-/* ---- здесь в цикле для каждой пары <название-строка байтов> вызову функцию, чтобы скопировать их в новый архив */
+/* ---- здесь в цикле для каждой пары <название-строка байтов> вызываем функцию, чтобы скопировать их в новый архив */
             logger.log(Level.INFO, zipEntryName+" "+bytes.toString());
             try {
                 copyExistingFile_ToTheNewArchive(pathZip, bytes, zipEntryName, zipOutputStream);
@@ -125,6 +127,7 @@ public class WorkingWithZip {
             }
         }catch(IOException ex){
             logger.log(Level.INFO, "Exception while trying to write byte array in side link Filename with its Contents");
+/* ---- до того, как почистил catch, функция выбрасывала GZipInputStream unexpected end of ZLib input stream и крашилась. Решение - магическое, смысла пока не понимаю */
     }
         return zipEntryMap;
 /* ---- возвращаем пары <название - массив байтов> */
@@ -138,7 +141,7 @@ public class WorkingWithZip {
         zipOutputStream.putNextEntry(new ZipEntry(zipEntryName));
 /* ---- открываем запись файла в архив */
         zipOutputStream.write(bytes);
-/* ---- записываем сам файл */
+/* ---- записываем в архив сам файл */
     }
 
     private static void addNewFileInOpenedArchive(String fileToBeAdded, String archiveToAddAFile, ZipOutputStream zos) throws IOException {
@@ -218,5 +221,5 @@ public class WorkingWithZip {
         } else {
             logger.log(Level.INFO, "error while deleting the file");
         }
-    }
+    } //delete File IfExists
 }
