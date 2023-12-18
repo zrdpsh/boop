@@ -1,5 +1,8 @@
 import java.io.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -10,11 +13,38 @@ public class WorkingWithZip {
     public static void main(String[] args) throws IOException {
 
         String[] tstString = createBunchOfFiles(10, 3);
-        int[] zipResult = zipGivenFiles("tst.zip", tstString);
+//        int[] zipResult = zipGivenFiles("tst.zip", tstString);
+        zipGivenFiles("tst.zip", tstString);
         System.out.println(String.format("Function worked %s", zipResult[1] == 0? "FINE" : "BAD"));
     }
 
-    public static int[] zipGivenFiles(String nameOfTheArchive, String[] namesOfTheFiles) throws IOException {
+
+    public static void zipGivenFiles(String nameOfTheArchive, String[] namesOfTheFiles) throws IOException {
+/* Чтобы добавить файл в архив, надо:
+* - превратить имя файла в исходящий поток File -> FileOutputStream -> ZipOutputStream
+* - сделать сам архив входящим потоком, открыть его на запись File -> */
+    }
+
+    public static void saveFileInArchive(String fileToBeAdded, String archiveToAddAFile) throws FileNotFoundException {
+
+        Path pathToBeAdded = Paths.get((new File(fileToBeAdded)).getAbsolutePath());
+        ZipOutputStream zos = null;
+
+        try {
+            zos = new ZipOutputStream(new FileOutputStream(archiveToAddAFile));
+            zos.putNextEntry(new ZipEntry(fileToBeAdded));
+            /* открывает zip файл на запись и перемещает указатель в начало потока ??? */
+            Files.copy(pathToBeAdded, zos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            zos.close();
+        }
+
+    }
+
+
+    public static int[] zipGivenFilesExp(String nameOfTheArchive, String[] namesOfTheFiles) throws IOException {
         Logger logger = Logger.getLogger(WorkingWithZip.class.getName());
         int[] rs = {1, 0};
 /*-----------------what this line do ?----------------*/
