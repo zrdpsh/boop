@@ -55,10 +55,11 @@ public class WorkingWithImages {
                 } else {
                     String ext = getExtension_m(file);
                     logger.log(Level.INFO, String.format("we get %s extension inside the folder", ext));
-                    if (ext == formatIn) {
+                    if (ext != null && ext.equalsIgnoreCase(formatIn)) {
                         logger.log(Level.INFO, String.format("converting image"));
                         BufferedImage img = ImageIO.read(new File(String.valueOf(file)));
                         ImageIO.write(img, formatOut, new File(String.valueOf(file)));
+                        result.add(img);
                     }
                 }
                 /* на самой первой итерации папка будет всего одна - "." */
