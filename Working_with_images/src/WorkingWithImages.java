@@ -56,10 +56,17 @@ public class WorkingWithImages {
                     String ext = getExtension_m(file);
                     logger.log(Level.INFO, String.format("we get %s extension inside the folder", ext));
                     if (ext != null && ext.equalsIgnoreCase(formatIn)) {
-                        logger.log(Level.INFO, String.format("converting image"));
-                        BufferedImage img = ImageIO.read(new File(String.valueOf(file)));
-                        ImageIO.write(img, formatOut, new File(String.valueOf(file)));
-                        result.add(img);
+                        try {
+                            logger.log(Level.INFO, String.format("converting image"));
+                            String filename = String.valueOf(file);
+                            BufferedImage img = ImageIO.read(new File(filename));
+                            File resultingImage = new File(filename.substring(0,filename.lastIndexOf(".")) + "." + formatOut);
+                            ImageIO.write(img, formatOut, resultingImage);
+                            result.add(file);
+                        } catch (Exception e) {
+                            logger.log(Level.INFO, "Exeption while read write file");
+                            throw e;
+                        }
                     }
                 }
                 /* на самой первой итерации папка будет всего одна - "." */
