@@ -1,12 +1,9 @@
 import java.awt.*;
 import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -32,13 +29,13 @@ public class WorkingWithImages {
         ArrayList<File> result  = new ArrayList<>();
 
         arrayToTrackNamesOfFolder.add(new File(System.getProperty("user.dir")));
+        logger.log(Level.INFO, String.format("getting the name of the current folder"));
 
         for(int u = 0; u < depth; u++) {
 
             File[] arrayToTrackNamesOfFolderCopy = arrayToTrackNamesOfFolder.toArray(new File[arrayToTrackNamesOfFolder.size()]);
 
             arrayToTrackNamesOfFolder.clear();
-            /* освободить первоначальный список для новых названий папок. старые - из предыдущего уровня - остаются в только что созданной копии */
             for (File givenFile : arrayToTrackNamesOfFolderCopy) {
                 logger.log(Level.INFO, String.format("we are searching %s level deep in hierarchy", depth));
                 if (givenFile.isDirectory()) {
@@ -123,30 +120,11 @@ public class WorkingWithImages {
             drawStringCustom(g, textInsideTheFrame, xUpperLeft+squareSide/3, yUpperLeft+squareSide/3);
             logger.log(Level.INFO, String.format("text added"));
         } catch (Exception e) {
-
+            logger.log(Level.INFO, e.getMessage());
         } finally {
             g.dispose();
             g.dispose();
         }
-//
-//        int squareSide = img.getWidth() > img.getHeight()? img.getHeight()/3 : img.getWidth()/3;
-//        int xUpperLeft = img.getWidth()/2  - squareSide/2;
-//        int yUpperLeft = img.getHeight()/2 - squareSide/2;
-//        logger.log(Level.INFO, String.format("reference point of the square set at x:%s y:%s", xUpperLeft, yUpperLeft));
-//
-//        FontRenderContext context = g.getFontRenderContext();
-//        Font f = new Font("Helvetica-bold-italic", Font.ITALIC, 20);
-//
-//        g.setColor(Color.BLACK);
-//        g.fillRect((img.getWidth()-squareSide)/2, (img.getHeight()-squareSide)/2, squareSide, squareSide);
-//        logger.log(Level.INFO, String.format("Background square added"));
-//
-//        g.setColor(Color.WHITE);
-//        g.setFont(f);
-//        drawStringCustom(g, textInsideTheFrame, xUpperLeft+squareSide/3, yUpperLeft+squareSide/3);
-//        logger.log(Level.INFO, String.format("text added"));
-//        g.dispose();
-//        g.dispose();
     }//drawSquare
 
     private static void drawStringCustom(Graphics2D g, String stringToPrint, int x, int y) {
