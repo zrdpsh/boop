@@ -28,35 +28,33 @@ public class WorkingWithImages {
         logger.log(Level.INFO, "returnConvertedImages is called");
         logger.log(Level.INFO, "-------------------------------");
 
-        ArrayList<File> expand = new ArrayList<File>();
+        ArrayList<File> arrayToTrackNamesOfFolder = new ArrayList<File>();
         ArrayList<File> result  = new ArrayList<>();
 
-        expand.add(new File(System.getProperty("user.dir")));
+        arrayToTrackNamesOfFolder.add(new File(System.getProperty("user.dir")));
 
         for(int u = 0; u < depth; u++) {
 
-            File[] expandCopy = expand.toArray(new File[expand.size()]);
-            /* переписываем данные из списка expand в массив expandCopy
-             * В качестве аргумента нужно передать инциализированный массив нужной длины. Длину из expand извлекаем с помощью .size()
-             * В результате получится массив ссылок на объекты типа File, в который записаны все названия папок на текущем уровне*/
+            File[] arrayToTrackNamesOfFolderCopy = arrayToTrackNamesOfFolder.toArray(new File[arrayToTrackNamesOfFolder.size()]);
 
-            expand.clear();
+            arrayToTrackNamesOfFolder.clear();
             /* освободить первоначальный список для новых названий папок. старые - из предыдущего уровня - остаются в только что созданной копии */
-            for (File givenFile : expandCopy) {
+            for (File givenFile : arrayToTrackNamesOfFolderCopy) {
                 logger.log(Level.INFO, String.format("we are searching %s level deep in hierarchy", depth));
                 if (givenFile.isDirectory()) {
-                    expand.addAll(Arrays.asList(givenFile.listFiles()));
-                    /* .. если является - получаем файлы, лежащие внутри file c помощью .listFiles() в виде массива с объектами File ->
-                     *   -> Arrays.asList превращает наш массив файлов в список
-                     *   добавляем названия файлов в expand, освобождённый перед началом работы цикла*/
+                    arrayToTrackNamesOfFolder.addAll(Arrays.asList(givenFile.listFiles()));
                 } else {
                     String extensionOfTheGivenFile = getExtension(givenFile.getName());
                     logger.log(Level.INFO, String.format("we have %s file named %s", extensionOfTheGivenFile, givenFile.getName()));
 
                     if ((extensionOfTheGivenFile != null) && (extensionOfTheGivenFile.equalsIgnoreCase(givenFormat))) {
-                        result.add(resultOfConverting(givenFile.getName(), desiredFormat,addGraphics));
-                        logger.log(Level.INFO, "Given file do have needed extension. Adding it to resulting array");
-                    }
+                        try {
+                            result.add(resultOfConverting(givenFile.getName(), desiredFormat, addGraphics));
+                            logger.log(Level.INFO, "Given file do have needed extension. Adding it to resulting array");
+                        } catch (Exception e) {
+                            logger.log(Level.INFO, e.getMessage());
+                        }//try catch clause
+                    } //if extension == null
                 } //else clause inside inner loop
             } // inner loop to get all the files
         } //main loop inside converted images
@@ -73,14 +71,19 @@ public class WorkingWithImages {
         try {
             logger.log(Level.INFO, String.format("try to convert image"));
             BufferedImage img = ImageIO.read(new File(nameOfTheGivenFile));
-            if (drawImage) drawSquare(img, "Hello,\n World!");
+            if (drawImage) drawSquare(img, "Hello,\nWorld!");
+            logger.log(Level.INFO, "resultOfConverting draws square");
             resultingImage = new File(nameOfTheGivenFile.substring(0,nameOfTheGivenFile.lastIndexOf(".")) + "." + desiredFormat);
             ImageIO.write(img, desiredFormat, resultingImage);
+            logger.log(Level.INFO, "converted image is written to disk");
             return resultingImage;
         } catch (Exception e) {
             logger.log(Level.INFO, "Exception while read write file");
-            throw e;
-        }
+            logger.log(Level.INFO, e.getMessage());
+            logger.log(Level.INFO, "Heading to the next item after the error");
+            return null;
+        } //try catch clause
+
     }//return converted File
 
     private static String getExtension(String fileName) {
@@ -91,44 +94,66 @@ public class WorkingWithImages {
         if (i > 0) {
             logger.log(Level.INFO, String.format("file have extension '.%s'", fileName.substring(i+1)));
             return fileName.substring(i+1);
-        }
+        }//if (i > 0)
         logger.log(Level.INFO, String.format("Using getExtension_m we find nothing", fileName));
         return null;
-    }
+    } //getExtension function
+
 
     private static void drawSquare(BufferedImage img, String textInsideTheFrame) throws IOException {
         logger.log(Level.INFO, String.format("drawSquare is called"));
 
         Graphics2D g = img.createGraphics();
-        int squareSide = img.getWidth() > img.getHeight()? img.getHeight()/3 : img.getWidth()/3;
-        int xUpperLeft = img.getWidth()/2  - squareSide/2;
-        int yUpperLeft = img.getHeight()/2 - squareSide/2;
-        logger.log(Level.INFO, String.format("reference point of the square set at x:%s y:%s", xUpperLeft, yUpperLeft));
-//        FontMetrics m = g.getFontMetrics(f);
 
-        FontRenderContext context = g.getFontRenderContext();
-        Font f = new Font("Helvetica-bold-italic", Font.ITALIC, 20);
-//        TextLayout txt = new TextLayout(textInsideTheFrame, f, context);
-//        Rectangle2D bounds = txt.getBounds();
+        try {
+            int squareSide = img.getWidth() > img.getHeight()? img.getHeight()/3 : img.getWidth()/3;
+            int xUpperLeft = img.getWidth()/2  - squareSide/2;
+            int yUpperLeft = img.getHeight()/2 - squareSide/2;
+            logger.log(Level.INFO, String.format("reference point of the square set at x:%s y:%s", xUpperLeft, yUpperLeft));
+
+            FontRenderContext context = g.getFontRenderContext();
+            Font f = new Font("Helvetica-bold-italic", Font.ITALIC, 20);
+
+            g.setColor(Color.BLACK);
+            g.fillRect((img.getWidth()-squareSide)/2, (img.getHeight()-squareSide)/2, squareSide, squareSide);
+            logger.log(Level.INFO, String.format("Background square added"));
+
+            g.setColor(Color.WHITE);
+            g.setFont(f);
+            drawStringCustom(g, textInsideTheFrame, xUpperLeft+squareSide/3, yUpperLeft+squareSide/3);
+            logger.log(Level.INFO, String.format("text added"));
+        } catch (Exception e) {
+
+        } finally {
+            g.dispose();
+            g.dispose();
+        }
 //
-//        int x = (int) ((g.getWidth() - (int) bounds.getWidth())/2);
-
-        g.setColor(Color.BLACK);
-        g.fillRect((img.getWidth()-squareSide)/2, (img.getHeight()-squareSide)/2, squareSide, squareSide);
-        logger.log(Level.INFO, String.format("Background square added"));
-
-        g.setColor(Color.WHITE);
-        g.setFont(f);
-//        drawStringCustom(textInsideTheFrame, img.getWidth()/3,img.getHeight()/3);
-        drawStringCustom(g, textInsideTheFrame, xUpperLeft,yUpperLeft);
-        logger.log(Level.INFO, String.format("text added"));
-        g.dispose();
-        g.dispose();
+//        int squareSide = img.getWidth() > img.getHeight()? img.getHeight()/3 : img.getWidth()/3;
+//        int xUpperLeft = img.getWidth()/2  - squareSide/2;
+//        int yUpperLeft = img.getHeight()/2 - squareSide/2;
+//        logger.log(Level.INFO, String.format("reference point of the square set at x:%s y:%s", xUpperLeft, yUpperLeft));
+//
+//        FontRenderContext context = g.getFontRenderContext();
+//        Font f = new Font("Helvetica-bold-italic", Font.ITALIC, 20);
+//
+//        g.setColor(Color.BLACK);
+//        g.fillRect((img.getWidth()-squareSide)/2, (img.getHeight()-squareSide)/2, squareSide, squareSide);
+//        logger.log(Level.INFO, String.format("Background square added"));
+//
+//        g.setColor(Color.WHITE);
+//        g.setFont(f);
+//        drawStringCustom(g, textInsideTheFrame, xUpperLeft+squareSide/3, yUpperLeft+squareSide/3);
+//        logger.log(Level.INFO, String.format("text added"));
+//        g.dispose();
+//        g.dispose();
     }//drawSquare
 
     private static void drawStringCustom(Graphics2D g, String stringToPrint, int x, int y) {
+        logger.log(Level.INFO, String.format("drawStringCustom is called"));
         for (String line : stringToPrint.split("\n")) {
             g.drawString(line, x, y += g.getFontMetrics().getHeight());
+            logger.log(Level.INFO, String.format("drawing %s line", line));
         }
     }//draw string
 }
