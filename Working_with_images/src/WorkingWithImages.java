@@ -1,4 +1,7 @@
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -94,16 +97,38 @@ public class WorkingWithImages {
     }
 
     private static void drawSquare(BufferedImage img, String textInsideTheFrame) throws IOException {
+        logger.log(Level.INFO, String.format("drawSquare is called"));
+
         Graphics2D g = img.createGraphics();
-        int s = img.getWidth() > img.getHeight()? img.getHeight()/3 : img.getWidth()/3;
+        int squareSide = img.getWidth() > img.getHeight()? img.getHeight()/3 : img.getWidth()/3;
+        int xUpperLeft = img.getWidth()/2  - squareSide/2;
+        int yUpperLeft = img.getHeight()/2 - squareSide/2;
+        logger.log(Level.INFO, String.format("reference point of the square set at x:%s y:%s", xUpperLeft, yUpperLeft));
+//        FontMetrics m = g.getFontMetrics(f);
+
+        FontRenderContext context = g.getFontRenderContext();
+        Font f = new Font("Helvetica-bold-italic", Font.ITALIC, 20);
+//        TextLayout txt = new TextLayout(textInsideTheFrame, f, context);
+//        Rectangle2D bounds = txt.getBounds();
+//
+//        int x = (int) ((g.getWidth() - (int) bounds.getWidth())/2);
+
         g.setColor(Color.BLACK);
-        g.fillRect((img.getWidth()-s)/2, (img.getHeight()-s)/2, s, s);
-        logger.log(Level.INFO, String.format("bacground added"));
+        g.fillRect((img.getWidth()-squareSide)/2, (img.getHeight()-squareSide)/2, squareSide, squareSide);
+        logger.log(Level.INFO, String.format("Background square added"));
+
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial Black", Font.ITALIC, 20));
-        g.drawString(textInsideTheFrame, img.getWidth()/3,img.getHeight()/3);
+        g.setFont(f);
+//        drawStringCustom(textInsideTheFrame, img.getWidth()/3,img.getHeight()/3);
+        drawStringCustom(g, textInsideTheFrame, xUpperLeft,yUpperLeft);
         logger.log(Level.INFO, String.format("text added"));
         g.dispose();
         g.dispose();
     }//drawSquare
+
+    private static void drawStringCustom(Graphics2D g, String stringToPrint, int x, int y) {
+        for (String line : stringToPrint.split("\n")) {
+            g.drawString(line, x, y += g.getFontMetrics().getHeight());
+        }
+    }//draw string
 }
