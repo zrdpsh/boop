@@ -10,16 +10,19 @@ import java.util.logging.Logger;
 
 
 public class WorkingWithImages {
+    static Logger logger = Logger.getLogger(WorkingWithImages.class.getName());
+
     public static void main(String[] args) throws IOException {
-        Logger logger = Logger.getLogger(WorkingWithImages.class.getName());
         logger.log(Level.INFO, String.format("main method started"));
         ArrayList<File> convertedImages = returnConvertedImages("png", "jpg");
-//        Logger.log(Level.INFO, String.format("There are %s converted files", convertedImages.size()));
+        logger.log(Level.INFO, String.format("There are %s converted files", convertedImages.size()));
 
     }
 
-    public static ArrayList<File> returnConvertedImages(String formatIn, String formatOut) throws IOException {
-        Logger logger = Logger.getLogger(WorkingWithImages.class.getName());
+    public static ArrayList<File> returnConvertedImages(String givenFormat, String desiredFormat) throws IOException {
+        logger.log(Level.INFO, "-------------------------------");
+        logger.log(Level.INFO, "returnConvertedImages is called");
+        logger.log(Level.INFO, "-------------------------------");
 
         File root = new File(".");
         /* инициализировать файл с именем "." - верхняя папка в иерархии */
@@ -42,44 +45,53 @@ public class WorkingWithImages {
 
             expand.clear();
             /* освободить первоначальный список для новых названий папок. старые - из предыдущего уровня - остаются в только что созданной копии */
-            for (File file : expandCopy) {
-                /* запустить цикл, в котором перебираем все названия файлов*/
-                System.out.println(depth + " " + file);
-                /* напечатать в консоль пару "уровень вложенности - название файла" - собственно, итог работы функции*/
-                if (file.isDirectory()) {
+            for (File givenFile : expandCopy) {
+                logger.log(Level.INFO, String.format("main loop runs through %s sublevel", depth));
+                if (givenFile.isDirectory()) {
                     /* проверить, является ли файл из полученного списка папкой - так мы получаем список файлов следующего уровня вложенности... */
-                    expand.addAll(Arrays.asList(file.listFiles()));
+                    expand.addAll(Arrays.asList(givenFile.listFiles()));
                     /* .. если является - получаем файлы, лежащие внутри file c помощью .listFiles() в виде массива с объектами File ->
                      *   -> Arrays.asList превращает наш массив файлов в список
                      *   добавляем названия файлов в expand, освобождённый перед началом работы цикла*/
                 } else {
-                    String ext = getExtension_m(file);
-                    logger.log(Level.INFO, String.format("we get %s extension inside the folder", ext));
-                    if (ext != null && ext.equalsIgnoreCase(formatIn)) {
-                        try {
-                            logger.log(Level.INFO, String.format("converting image"));
-                            String filename = String.valueOf(file);
-                            BufferedImage img = ImageIO.read(new File(filename));
-                            File resultingImage = new File(filename.substring(0,filename.lastIndexOf(".")) + "." + formatOut);
-                            ImageIO.write(img, formatOut, resultingImage);
-                            result.add(file);
-                        } catch (Exception e) {
-                            logger.log(Level.INFO, "Exeption while read write file");
-                            throw e;
-                        }
+//                    String[] t = getNameAndExtension(file);
+//                    logger.log(Level.INFO, String.format("we tried to separate name and extension " +
+//                            "of the given file and write them into temporary variable"));
+//
+//                    String givenFile = t[0];
+//                    String extensionOfTheGivenFile = t[1];
+                    String extensionOfTheGivenFile = getExtension(givenFile.getName());
+                    logger.log(Level.INFO, String.format("we have %s file named %s", extensionOfTheGivenFile, givenFile.getName()));
+
+                    if ((extensionOfTheGivenFile != null) && (extensionOfTheGivenFile.equalsIgnoreCase(desiredFormat))) {
+                        result.add(resultOfConverting(givenFile.getName(), desiredFormat));
+                        logger.log(Level.INFO, "Given file do have needed extension. Adding it to resulting array");
                     }
-                }
+                } //else clause inside inner loop
                 /* на самой первой итерации папка будет всего одна - "." */
-            }
-        }
+            } // inner loop to get all the files
+        } //main loop inside converted images
         return result;
     } //return converted images
 
-    private static String getExtension_m(File f) {
-        Logger logger = Logger.getLogger(WorkingWithImages.class.getName());
-        logger.log(Level.INFO, "getExtension_m is called");
-        String fileName = f.getName();
-        logger.log(Level.INFO, String.format("Inside getExtension_m we get %s extension", fileName));
+    private static File resultOfConverting(String nameOfTheGivenFile, String desiredFormat) throws IOException {
+        File resultingImage;
+
+        try {
+            logger.log(Level.INFO, String.format("converting image"));
+            BufferedImage img = ImageIO.read(new File(nameOfTheGivenFile));
+            resultingImage = new File(nameOfTheGivenFile.substring(0,nameOfTheGivenFile.lastIndexOf(".")) + "." + desiredFormat);
+            ImageIO.write(img, desiredFormat, resultingImage);
+            return resultingImage;
+        } catch (Exception e) {
+            logger.log(Level.INFO, "Exeption while read write file");
+            throw e;
+        }
+    }//return converted File
+
+    private static String getExtension(String fileName) {
+        logger.log(Level.INFO, "getNameAndExtension is called");
+        logger.log(Level.INFO, String.format("Inside getNameAndExtension we get %s extension", fileName));
         int i = fileName.lastIndexOf('.');
         if (i > 0) {
             logger.log(Level.INFO, String.format("last index of is %s", i));
