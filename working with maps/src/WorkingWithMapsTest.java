@@ -1,3 +1,5 @@
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class WorkingWithMapsTest {
@@ -17,5 +19,19 @@ class WorkingWithMapsTest {
     @org.junit.jupiter.api.Test
     void TestForNull_printKeyValuePairs() {
 
+    }
+
+    @Test
+    void testMain() {
+    }
+
+    @Test
+    void printKeyValuePairs() {
+    }
+
+    @Test
+    void TestLength_generateArrayOfGivenLength() {
+        int[] testArray = WorkingWithMaps.generateArrayOfGivenLength(100, 10);
+        assertEquals(testArray.length, 100);
     }
 }
