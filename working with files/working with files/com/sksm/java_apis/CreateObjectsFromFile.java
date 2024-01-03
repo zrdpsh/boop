@@ -1,13 +1,16 @@
+package com.sksm.java_apis;
+
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CreateObjectsFromFile {
-    public static void main(String[] args) throws FileNotFoundException, IOException, IndexOutOfBoundsException {
+    public static void main(String[] args) throws FileNotFoundException, IndexOutOfBoundsException {
         Logger logger = Logger.getLogger(CreateObjectsFromFile.class.getName());
         try {
-            ArrayList<Alpaca> newAlpacas = createTheClassesFromSource(WriteToFile.PATHNAME + "working with files\\AlpacaNames.txt");
+            List<Alpaca> newAlpacas = createTheClassesFromSource(WriteToFile.PATHNAME + "working with files\\AlpacaNames.txt");
             Alpaca temp = newAlpacas.get(2);
             System.out.println(temp.getTheName());
         } catch (IndexOutOfBoundsException e) {
@@ -19,9 +22,9 @@ public class CreateObjectsFromFile {
         }
     }
 
-    public static ArrayList createTheClassesFromSource(String pathToFile) {
+    public static List<Alpaca> createTheClassesFromSource(String pathToFile) {
         Logger logger = Logger.getLogger(CreateObjectsFromFile.class.getName());
-        ArrayList<Alpaca> result = new ArrayList<Alpaca>();
+        ArrayList<Alpaca> result = new ArrayList<>();
 
         try(BufferedReader br = new BufferedReader(new FileReader(new File(pathToFile)))) {
             logger.log(Level.INFO, "Start to create objects from strings: ");
@@ -49,8 +52,9 @@ public class CreateObjectsFromFile {
         } catch (Exception e) {
             Logger logger = Logger.getLogger(CreateObjectsFromFile.class.getName());
             logger.log(Level.INFO, "There is some problem creating an Alpaca", e.toString());
-            throw e;
         }
+
+        return null;
     } //create Alpaca from string function
 
 //    ArrayList

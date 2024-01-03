@@ -1,3 +1,5 @@
+package com.sksm.java_apis;
+
 public class Alpaca {
 
     String name;
