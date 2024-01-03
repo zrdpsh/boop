@@ -1,3 +1,6 @@
+package com.sksm.java_apis;
+
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -12,7 +15,6 @@ public class WorkingWithMaps {
 
     public static void main(String[] args) {
         logger.log(Level.INFO, String.format("main method started"));
-//        printKeyValuePairs(100);
 
         int[] arrayToFilter = generateArrayOfGivenLength(100, 10);
 
@@ -70,7 +72,7 @@ public class WorkingWithMaps {
         logger.log(Level.INFO, String.format("Converting array to value-frequency pairs:"));
         for (int e: arrayToFilter) {
             valuesAndFrequencies.put(e, valuesAndFrequencies.get(e)==null? 0 :valuesAndFrequencies.get(e)+1);
-            logger.log(Level.INFO, String.format("%s is presented %s times", e, valuesAndFrequencies.get(e)));
+            logger.log(Level.INFO, String.format("{0} is presented {1} times", e, valuesAndFrequencies.get(e)));
         }
         logger.log(Level.INFO, String.format("OK"));
 
@@ -80,7 +82,7 @@ public class WorkingWithMaps {
         for (Map.Entry<Integer, Integer> entry : valuesAndFrequencies.entrySet()) {
             if (entry.getValue() < filterNumber) copy.remove(entry.getValue());
         }
-        logger.log(Level.INFO, String.format("Map became %s units long", copy.size()));
+        logger.log(Level.CONFIG, String.format("Map became {0} units long", copy.size()));
 
         logger.log(Level.INFO, String.format("Converting map to array:"));
         Set<Integer> keys = copy.keySet();
