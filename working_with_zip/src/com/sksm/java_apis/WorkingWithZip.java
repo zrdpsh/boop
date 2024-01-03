@@ -1,8 +1,11 @@
+package com.sksm.java_apis;
+
 import java.io.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,7 +30,7 @@ public class WorkingWithZip {
 
         createArchiveToTest(NAMEOFARCHIVE);
 /* ---- создаем непустой тестовый архив с текстовым файлом внутри */
-        logger.log(Level.INFO, String.format("While running the main function, testing archive created successfully"));
+        logger.log(Level.INFO, "While running the main function, testing archive created successfully");
 
         try {
             addFilesToArchive(NAMEOFARCHIVE, files);
@@ -59,22 +62,20 @@ public class WorkingWithZip {
 * ----- его содержимое в виде массива байтов*/
         FileOutputStream fileOutputStream =  new FileOutputStream(pathZip);
 /* ---- оборачиваем путь до архива в FileOutputStream */
-        ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);
-/* ---- оборачиваем FileOutputStream в ZipOutputStream - архив представляется в виде объекта, с которым может работать java*/
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);) {
+            /* ---- оборачиваем FileOutputStream в ZipOutputStream - архив представляется в виде объекта, с которым может работать java*/
 
-        zipEntryMap.forEach((zipEntryName, bytes) -> {
-/* ---- здесь в цикле для каждой пары <название-строка байтов> вызываем функцию, чтобы скопировать их в новый архив */
-            logger.log(Level.INFO, zipEntryName+" "+bytes.toString());
-            try {
-                copyExistingFile_ToTheNewArchive(pathZip, bytes, zipEntryName, zipOutputStream);
-/* ---- отдельный файл из старого архива добавляется в новый архив с тем же именем */
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+            zipEntryMap.forEach((zipEntryName, bytes) -> {
+                /* ---- здесь в цикле для каждой пары <название-строка байтов> вызываем функцию, чтобы скопировать их в новый архив */
+                logger.log(Level.INFO, zipEntryName+" "+ Arrays.toString(bytes));
+                try {
+                    copyExistingFile_ToTheNewArchive(pathZip, bytes, zipEntryName, zipOutputStream);
+                    /* ---- отдельный файл из старого архива добавляется в новый архив с тем же именем */
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
 
-        zipOutputStream.closeEntry();
-/* ---- закрываем запись в архив - иначе ошибка */
 
         for (String fileName: namesOfTheFiles) {
 /* ---- в цикле перебираем все новые файлы, предназначенные для записи, и добавляем каждый из них архив из предыдущего цикла*/
@@ -89,9 +90,7 @@ public class WorkingWithZip {
 
         }
 
-        zipOutputStream.close();
-/* ---- закрываем запись после добавления новых файлов */
-
+     }
     }
         private static Map<String, byte[]> link_FileName_With_ItsContents(String pathZip) throws IOException {
         Logger logger = Logger.getLogger(WorkingWithZip.class.getName());
@@ -100,11 +99,9 @@ public class WorkingWithZip {
 /* ---- создаём пустой словарь под пары <название - содержимое в байтах> */
         byte[] buffer = new byte[1024];
 /* ---- создаём временный байтовый массив для копирования содержимого файла */
-        try {
-            FileInputStream fileInputStream = new FileInputStream(pathZip);
-/* ---- оборачиваем путь до архива в FileOutputStream */
-            ZipInputStream zipInputStream = new ZipInputStream(fileInputStream);
-/* ---- оборачиваем FileOutputStream в ZipOutputStream - чтобы можно было в него записывать*/
+        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(pathZip))){
+;
+/* ---- оборачиваем путь до архива в ZipOutputStream - чтобы можно было в него записывать*/
             ZipEntry zipEntry;
 /* ---- инициализируем объект, с помощью которое отдельный файл добавляется в архив */
 
@@ -197,8 +194,8 @@ public class WorkingWithZip {
         String testString = "once upon a time";
 
         File f = new File(archiveName);
-        try {
-            ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(f));
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(f))){
+
             ZipEntry e = new ZipEntry("testFile.txt");
             zos.putNextEntry(e);
 

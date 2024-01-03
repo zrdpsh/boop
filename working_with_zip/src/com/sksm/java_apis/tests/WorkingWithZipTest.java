@@ -1,3 +1,5 @@
+package com.sksm.java_apis.tests;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
