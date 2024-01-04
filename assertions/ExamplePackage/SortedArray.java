@@ -41,7 +41,8 @@ public class SortedArray
             j--;
          }
          arr[j] = a;
-         logger.log(Level.INFO, () -> "After " + i + " iteration array is " + Arrays.toString(arr));
+         int finalI = i;
+         logger.log(Level.INFO, () -> "After " + finalI + " iteration array is " + Arrays.toString(arr));
       }//for clause
 
       assert isSorted(arr): "array isn't sorted";
