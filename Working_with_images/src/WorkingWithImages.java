@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.font.FontRenderContext;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,12 +14,12 @@ public class WorkingWithImages {
 
     public static void main(String[] args) throws IOException {
         logger.log(Level.INFO, "main method started");
-        ArrayList<File> convertedImages = returnConvertedImages("png", "jpg", 2, true);
+        List convertedImages = returnConvertedImages("png", "jpg", 2, true);
         logger.log(Level.INFO, String.format("There are %s converted files after MAIN method execution", convertedImages.size()));
 
     }
 
-    public static ArrayList<File> returnConvertedImages(String givenFormat, String desiredFormat, int depth, boolean addGraphics) throws IOException {
+    public static List<File> returnConvertedImages(String givenFormat, String desiredFormat, int depth, boolean addGraphics) throws IOException {
         logger.log(Level.INFO, "-------------------------------");
         logger.log(Level.INFO, "returnConvertedImages is called");
         logger.log(Level.INFO, "-------------------------------");
@@ -31,7 +30,7 @@ public class WorkingWithImages {
         arrayToTrackNamesOfFolder.add(new File(System.getProperty("user.dir")));
         logger.log(Level.INFO, "getting the name of the current folder inside the returnToConverterImages");
 
-        logger.log(Level.INFO, "Start searching for files through the folders' tree");
+        logger.log(Level.INFO, "Start searching for files through the folders tree");
         for(int u = 0; u < depth; u++) {
 
             File[] arrayToTrackNamesOfFolderCopy = arrayToTrackNamesOfFolder.toArray(new File[arrayToTrackNamesOfFolder.size()]);

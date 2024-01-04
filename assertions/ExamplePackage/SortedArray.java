@@ -1,5 +1,6 @@
 package ExamplePackage;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -7,22 +8,21 @@ import java.util.InputMismatchException;
 
 public class SortedArray
 {
-   public static Logger logger = Logger.getLogger(SortedArray.class.getName());
+   public static final Logger logger = Logger.getLogger(SortedArray.class.getName());
    public static void main(String[] args)
    {
-      System.out.println("For how many months you have averege temperature values?");
+      logger.log(Level.INFO, () -> "For how many months you have average temperature values?");
       Scanner input = new Scanner(System.in);
       int[] temperatures = getKelvs(input.nextInt());
       sort(temperatures);
       for (int n: temperatures)
-         System.out.printf("%d ", n);
-      System.out.println();
+         logger.log(Level.INFO, () -> "Temperature is " + n + "\n");
    } //main method
 
    private static boolean isSorted(int[] x) {
       for (int i = 0; i < x.length - 1; i++) {
          if (x[i] > x[i + 1]) {
-            logger.info("isSorted returned false");
+            logger.log(Level.INFO, () -> "isSorted returned false");
             return false; }
        }
        return true;
@@ -41,7 +41,7 @@ public class SortedArray
             j--;
          }
          arr[j] = a;
-         logger.info("After " + i + " iteration array is " + Arrays.toString(arr));
+         logger.log(Level.INFO, () -> "After " + i + " iteration array is " + Arrays.toString(arr));
       }//for clause
 
       assert isSorted(arr): "array isn't sorted";
@@ -62,8 +62,8 @@ public class SortedArray
    }// getKelvs method
    
    private static int valueFromKeyboard(Scanner scanner) throws InputMismatchException {
-         int tmp;
          logger.info("valueFromKeyboard is called");
+      logger.log(Level.INFO, () -> "valueFromKeyboard function is called");
          try {
             logger.info("try clause is called");
             System.out.println("Please, enter the number in Kelvins: ");
