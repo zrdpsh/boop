@@ -14,9 +14,9 @@ public class WorkingWithImages {
     static Logger logger = Logger.getLogger(WorkingWithImages.class.getName());
 
     public static void main(String[] args) throws IOException {
-        logger.log(Level.INFO, String.format("main method started"));
+        logger.log(Level.INFO, "main method started");
         ArrayList<File> convertedImages = returnConvertedImages("png", "jpg", 2, true);
-        logger.log(Level.INFO, String.format("There are %s converted files", convertedImages.size()));
+        logger.log(Level.INFO, String.format("There are %s converted files after MAIN method execution", convertedImages.size()));
 
     }
 
@@ -29,15 +29,17 @@ public class WorkingWithImages {
         ArrayList<File> result  = new ArrayList<>();
 
         arrayToTrackNamesOfFolder.add(new File(System.getProperty("user.dir")));
-        logger.log(Level.INFO, String.format("getting the name of the current folder"));
+        logger.log(Level.INFO, "getting the name of the current folder inside the returnToConverterImages");
 
+        logger.log(Level.INFO, "Start searching for files through the folders' tree");
         for(int u = 0; u < depth; u++) {
 
             File[] arrayToTrackNamesOfFolderCopy = arrayToTrackNamesOfFolder.toArray(new File[arrayToTrackNamesOfFolder.size()]);
 
             arrayToTrackNamesOfFolder.clear();
             for (File givenFile : arrayToTrackNamesOfFolderCopy) {
-                logger.log(Level.INFO, String.format("we are searching %s level deep in hierarchy", depth));
+                logger.log(Level.INFO, "returnToConvertedImages:");
+                logger.log(Level.INFO, String.format("searching for files %s at level deep in hierarchy", u));
                 if (givenFile.isDirectory()) {
                     arrayToTrackNamesOfFolder.addAll(Arrays.asList(givenFile.listFiles()));
                 } else {
@@ -60,13 +62,14 @@ public class WorkingWithImages {
 
     private static File resultOfConverting(String nameOfTheGivenFile, String desiredFormat, boolean drawImage) throws IOException {
         logger.log(Level.INFO, "-------------------------------");
-        logger.log(Level.INFO, String.format("getExtension is called with file %s from returnConvertedImages", nameOfTheGivenFile));
+        logger.log(Level.INFO, () -> "getExtension is called with file %s from returnConvertedImages " + nameOfTheGivenFile);
         logger.log(Level.INFO, "-------------------------------");
 
         File resultingImage;
 
         try {
-            logger.log(Level.INFO, String.format("try to convert image"));
+            logger.log(Level.INFO, "resultOfConverting function:");
+            logger.log(Level.INFO, "try to convert image");
             BufferedImage img = ImageIO.read(new File(nameOfTheGivenFile));
             if (drawImage) drawSquare(img, "Hello,\nWorld!");
             logger.log(Level.INFO, "resultOfConverting draws square");
@@ -85,20 +88,22 @@ public class WorkingWithImages {
 
     private static String getExtension(String fileName) {
         logger.log(Level.INFO, "-------------------------------");
-        logger.log(Level.INFO, String.format("getExtension is called with file %s from returnConvertedImages", fileName));
+        logger.log(Level.INFO, () -> "getExtension is called with file %s from returnConvertedImages" + fileName);
         logger.log(Level.INFO, "-------------------------------");
         int i = fileName.lastIndexOf('.');
         if (i > 0) {
-            logger.log(Level.INFO, String.format("file have extension '.%s'", fileName.substring(i+1)));
+            logger.log(Level.INFO, () -> "file have extension  " + fileName.substring(i+1));
+            logger.log(Level.INFO, "return to resultOfConvertingFunction");
             return fileName.substring(i+1);
         }//if (i > 0)
-        logger.log(Level.INFO, String.format("Using getExtension_m we find nothing", fileName));
+        logger.log(Level.INFO, () -> "Using getExtension_m we find nothing" + fileName);
+        logger.log(Level.INFO, "return to resultOfConvertingFunction");
         return null;
     } //getExtension function
 
 
-    private static void drawSquare(BufferedImage img, String textInsideTheFrame) throws IOException {
-        logger.log(Level.INFO, String.format("drawSquare is called"));
+    private static void drawSquare(BufferedImage img, String textInsideTheFrame) {
+        logger.log(Level.INFO, () -> "drawSquare function is called");
 
         Graphics2D g = img.createGraphics();
 
@@ -106,19 +111,17 @@ public class WorkingWithImages {
             int squareSide = img.getWidth() > img.getHeight()? img.getHeight()/3 : img.getWidth()/3;
             int xUpperLeft = img.getWidth()/2  - squareSide/2;
             int yUpperLeft = img.getHeight()/2 - squareSide/2;
-            logger.log(Level.INFO, String.format("reference point of the square set at x:%s y:%s", xUpperLeft, yUpperLeft));
-
-            FontRenderContext context = g.getFontRenderContext();
+            logger.log(Level.INFO, () -> "reference point of the square set at x: " + xUpperLeft + " y:" + yUpperLeft);
             Font f = new Font("Helvetica-bold-italic", Font.ITALIC, 20);
 
             g.setColor(Color.BLACK);
             g.fillRect((img.getWidth()-squareSide)/2, (img.getHeight()-squareSide)/2, squareSide, squareSide);
-            logger.log(Level.INFO, String.format("Background square added"));
+            logger.log(Level.INFO, () -> "Background square added");
 
             g.setColor(Color.WHITE);
             g.setFont(f);
             drawStringCustom(g, textInsideTheFrame, xUpperLeft+squareSide/3, yUpperLeft+squareSide/3);
-            logger.log(Level.INFO, String.format("text added"));
+            logger.log(Level.INFO, () -> "text added");
         } catch (Exception e) {
             logger.log(Level.INFO, e.getMessage());
         } finally {
@@ -128,10 +131,11 @@ public class WorkingWithImages {
     }//drawSquare
 
     private static void drawStringCustom(Graphics2D g, String stringToPrint, int x, int y) {
-        logger.log(Level.INFO, String.format("drawStringCustom is called"));
+        logger.log(Level.INFO, () -> "drawStringCustom is called");
         for (String line : stringToPrint.split("\n")) {
             g.drawString(line, x, y += g.getFontMetrics().getHeight());
-            logger.log(Level.INFO, String.format("drawing %s line", line));
+            logger.log(Level.INFO, () -> "drawing "+ line + " line");
         }
     }//draw string
 }
+

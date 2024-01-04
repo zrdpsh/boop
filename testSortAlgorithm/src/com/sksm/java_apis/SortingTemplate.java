@@ -1,3 +1,5 @@
+package com.sksm.java_apis;
+
 public class SortingTemplate {
     public static void main(String[] args) {
         //empt

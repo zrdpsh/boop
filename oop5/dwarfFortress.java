@@ -8,6 +8,10 @@ import Creatures.*;
 
 public class dwarfFortress{
    public static void main(String[] args){
+
+	   String RORIEHAS = " points of health, Rorie has ";
+	   String POINTSOFHEALTH = " points of health***";
+
 /*------------4.2 500 objects------------------*/
 
       System.out.println();
@@ -35,14 +39,14 @@ public class dwarfFortress{
 	  DwarfWarrior rorie = new DwarfWarrior("Rorie", 100, 8);
 	  
 	  System.out.println("Two dwarfs mess with each other, but one of them now is way more stronger");
-	  System.out.println("***Randolf has " + randolf.getHealth() + " points of health, Rorie has " + rorie.getHealth() + " points of health***");
+	  System.out.println("***Randolf has " + randolf.getHealth() +  + rorie.getHealth() + " points of health***");
 	  System.out.println("They start as usual..");
 	  randolf.attack(rorie, 1, 1);
 	  rorie.attack(randolf, 1, 1);
-	  System.out.println("***after the attack Randolf has " + randolf.getHealth() + " points of health, Rorie has " + rorie.getHealth() + " points of health***");
+	  System.out.println("***after the attack Randolf has " + randolf.getHealth() + RORIEHAS + rorie.getHealth() + POINTSOFHEALTH);
 	  System.out.println("...but then one of them use his special force");
 	  randolf.attack(rorie, 1, 1);
 	  rorie.attack(randolf, 1, 1, 10); 
-	  System.out.println("***after the attack Randolf has " + randolf.getHealth() + " points of health, Rorie has " + rorie.getHealth() + " points of health***");      
+	  System.out.println("***after the attack Randolf has " + randolf.getHealth() + RORIEHAS + rorie.getHealth() + POINTSOFHEALTH);
    } //main
 } //class
