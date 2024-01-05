@@ -1,6 +1,10 @@
+package com.sksm.java_apis;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.sksm.java_apis.*;
 
 class WorkingWithMapsTest {
 
