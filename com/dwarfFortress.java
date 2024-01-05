@@ -1,5 +1,8 @@
 import java.util.*;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 class Creature {
    int health = 20;
@@ -8,6 +11,7 @@ class Creature {
 } //class Creature
 
 class Dwarf extends Creature{
+   static Logger logger = Logger.getLogger(Dwarf.class.getName());
    String name;
    String description = "A short, sturdy creature fond of drink and industry";
    String profession = "Craftsman";
@@ -128,4 +132,6 @@ public class dwarfFortress{
       
       
    } //main
+
+   static Logger logger = Logger.getLogger(WorkingWithMaps.class.getName());
 } //class

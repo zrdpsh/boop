@@ -5,18 +5,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DeleteFileWithFlag {
+    static Logger logger = Logger.getLogger(DeleteFileWithFlag.class.getName());
     public static void main(String[] args) {
-        Logger logger = Logger.getLogger(ExtensionsAndFolders.class.getName());
-        logger.log(Level.INFO, (deleteFilesWithFlag("TestFolderForDeleting")).toString());
+        logger.log(Level.INFO, () -> "main function is called");
+        logger.log(Level.INFO, () -> (deleteFilesWithFlag("TestFolderForDeleting")).toString());
     }
 
     public static Boolean deleteFilesWithFlag(String folderName) {
 
-        Logger logger = Logger.getLogger(DeleteFileWithFlag.class.getName());
+        logger.log(Level.INFO, () -> "deleteFilesWithFlag function is called");
 
         try {
             File indexOfFiles = new File(folderName);
             File[] entries = indexOfFiles.listFiles();
+
+            logger.log(Level.INFO, () -> "looping through the folder's hierarchy to delete files");
+            assert entries != null;
+
             for (File f: entries) {
 //                File currentFile = new File(indexOfFiles.getPath(), f);
                 if (f.isDirectory()) return false;
