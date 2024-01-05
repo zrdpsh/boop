@@ -41,7 +41,7 @@ public class WorkingWithMaps {
         logger.log(Level.INFO, () -> "Map is " + keyValuePairs.size() + " units long after initial run");
 
 
-        logger.log(Level.INFO, () -> "Pretty print our Map");
+        logger.log(Level.INFO, () -> "Pretty print our Map in printValueKeys function");
         System.out.println("There are " + howMuch + " pairs in the map");
         for (Map.Entry<Integer, Integer> entry : keyValuePairs.entrySet()) {
             int o = entry.getKey();
@@ -99,6 +99,8 @@ public class WorkingWithMaps {
             keys[e] = r.nextInt(range)+1;
             int finalE = e;
             logger.log(Level.INFO, () -> "" + keys[finalE] + " is added at [" + finalE + "]");
+            logger.log(Level.INFO, () -> "function generateArrayOfGivenLength");
+
             assert(keys[e] != 0);
         }
         logger.log(Level.INFO, () -> "Given array is " + keys.length + " units long");
