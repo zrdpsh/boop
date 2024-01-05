@@ -19,9 +19,11 @@ public class SortedArray
       logger.log(Level.INFO, () -> "Printing all temperatures inside the loop:");
       for (int n: temperatures)
          logger.log(Level.INFO, () -> "Temperature is " + n + "\n");
+
+      System.out.println(String.format("Array is %ssorted", isSortedInMiddle(temperatures)?"":"not "));
    } //main method
 
-   private static boolean isSorted(int[] x) {
+   static boolean isSorted(int[] x) {
       for (int i = 0; i < x.length - 1; i++) {
          if (x[i] > x[i + 1]) {
             logger.log(Level.INFO, () -> "isSorted returned false");
@@ -30,29 +32,61 @@ public class SortedArray
        return true;
    } //isSorted method
 
-   private static void sort(int[] arr)
+   static boolean isSortedAlt(int[] x) {
+      int i = x.length - 1;
+      if (i <= 0) return true;
+      if ((i & 1) > 0) {
+         if (x[i] < x[i - 1]) {
+            return false;
+         }
+         i--;
+      }
+      for (int xi = x[i]; i > 0; i -= 2) {
+         if (xi < x[i-1] || xi < x[i-2]) return false;
+      }
+
+      return x[0] <= x[1];
+   } //isSorted method
+
+   static boolean isSortedInMiddle(int[] x) {
+
+      if (x.length == 1) return true;
+      if (x.length == 2) return x[1] >= x[0];
+
+      int smpl = (int) Math.sqrt(x.length);
+      int mddl = (x.length-1)/2;
+      
+      for (int i = mddl; i < mddl+smpl; i++) {
+         if (x[i] > x[i+1]) return false;
+      }
+      return true;
+   } //isSorted method
+
+
+   static void sort(int[] arr)
    {
       logger.log(Level.INFO, () -> "sort function is called from the main with " + Arrays.toString(arr) + " array as an argument");
 
-      int j, a;
+      int j;
+      int a;
 
       logger.log(Level.INFO, () -> "main loop inside sort function to run through the given array:");
-      for (int i = 1; i < arr.length; i++)
-      {
+      for (int i = 1; i < arr.length; i++) {
          int finalI1 = i;
          logger.log(Level.INFO, () -> "checking " + finalI1 + " element");
          a = arr[i];
          j = i;
          logger.log(Level.INFO, () -> "sort function inner loop to move bigger element to the beginning:");
-         while (j > 0 && arr[j - 1] > a)
-         {
+         while (j > 0 && arr[j - 1] > a) {
             arr[j] = arr[j - 1];
             j--;
          }
          arr[j] = a;
          int finalI = i;
          logger.log(Level.INFO, () -> "After " + finalI + " iteration array is " + Arrays.toString(arr));
-      }//for clause
+         int finalJ = j;
+         logger.log(Level.INFO, () -> "After " + finalI + " iteration j equals " + finalJ);
+      }// for loop inside the sort function
 
       assert isSorted(arr): "array isn't sorted";
       assert arr[0]>-1: "temperature is below absolute zero somehow";
@@ -89,4 +123,5 @@ public class SortedArray
             return valueFromKeyboard(scanner);
          } 
    } //valueFromKeyboard function
+
 }
