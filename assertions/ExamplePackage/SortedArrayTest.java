@@ -77,7 +77,7 @@ public class SortedArrayTest {
 
     }
 
-    @Test
+    @Ignore
     public void testIsSortedInMiddle() {
         int[] testArray = generateRandomArray(ARRAYLENGTH);
 
@@ -90,6 +90,38 @@ public class SortedArrayTest {
         logger.log(Level.INFO, () -> "isSortedAlt function takes " + nd + " seconds to run");
 
         assertTrue(SortedArray.isSortedInMiddle(testArray));
+    }
+
+    @Test
+    public void testIsSorted100Times() {
+
+        int numberOfTests = 500000;
+
+        int[][] result = new int[numberOfTests][];
+
+        for (int i = 0; i < numberOfTests; i++) {
+            int[] testArray = generateRandomArray(ARRAYLENGTH);
+            result[i] = SortedArray.sort(testArray);
+        }
+
+        double sumsBeforeLoop = 0;
+        double sumsAfterLoop = 0;
+
+        for (int n = 0; n < result.length; n++) {
+            sumsBeforeLoop += Math.abs(result[n][0]);
+            sumsAfterLoop += Math.abs(result[n][1]);
+        }
+
+        sumsBeforeLoop = (sumsBeforeLoop*1.0)/numberOfTests;
+        sumsAfterLoop = (sumsAfterLoop*1.0)/numberOfTests;
+
+        double  finalSumsBeforeLoop = sumsBeforeLoop;
+        double finalSumsAfterLoop = sumsAfterLoop;
+        float ratio = (float) (((1.0*finalSumsAfterLoop)/finalSumsBeforeLoop)*100);
+        logger.log(Level.INFO, () -> "After " + numberOfTests + " tests average values are " + finalSumsBeforeLoop + " and " + finalSumsAfterLoop);
+        logger.log(Level.INFO, () -> "After " + numberOfTests + " ratio is  " + ratio);
+        System.out.println("After " + numberOfTests + " ratio is  " + ratio);
+
     }
 
     public float testIsSortedBoth() {

@@ -1,5 +1,6 @@
 package ExamplePackage;
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Arrays;
@@ -63,7 +64,7 @@ public class SortedArray
    } //isSorted method
 
 
-   static void sort(int[] arr)
+   static int[] sort(int[] arr)
    {
       logger.log(Level.INFO, () -> "sort function is called from the main with " + Arrays.toString(arr) + " array as an argument");
 
@@ -72,15 +73,18 @@ public class SortedArray
       int run = 0;
       int runningSum = 0;
 
+      int finalRunningSum1 = 0;
+
       for (int o = 0; o < arr.length; o++) {
          if (o%2==0) {
             runningSum += arr[o];
          } else {
             runningSum -= arr[o];
          }
-         int finalRunningSum = runningSum;
+         finalRunningSum1 = runningSum;
          int finalO = o;
-         logger.log(Level.INFO, () -> "Before sorting loop on the " + finalO + " element running sum equals " + finalRunningSum);
+         int finalRunningSum3 = finalRunningSum1;
+         logger.log(Level.INFO, () -> "Before sorting loop on the " + finalO + " element running sum equals " + finalRunningSum3);
 
       }
 
@@ -115,15 +119,17 @@ public class SortedArray
 
       runningSum = 0;
 
+      int finalRunningSum2 = 0;
       for (int o = 0; o < arr.length; o++) {
          if (o%2==0) {
             runningSum += arr[o];
          } else {
             runningSum -= arr[o];
          }
-         int finalRunningSum = runningSum;
+         finalRunningSum2 = runningSum;
          int finalO = o;
-         logger.log(Level.INFO, () -> "After the loop on the " + finalO + " element running sum equals " + finalRunningSum);
+         int finalRunningSum3 = finalRunningSum2;
+         logger.log(Level.INFO, () -> "After the loop on the " + finalO + " element running sum equals " + finalRunningSum3);
 
       }
 
@@ -132,6 +138,8 @@ public class SortedArray
 
       assert isSorted(arr): "array isn't sorted";
       assert arr[0]>-1: "temperature is below absolute zero somehow";
+
+      return new int[]{finalRunningSum1, finalRunningSum2};
    } //sort method
    
    
