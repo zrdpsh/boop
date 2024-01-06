@@ -13,7 +13,7 @@ public class DeleteFileWithFlag {
 
     public static Boolean deleteFilesWithFlag(String folderName) {
 
-        logger.log(Level.INFO, () -> "deleteFilesWithFlag function is called");
+        logger.log(Level.INFO, () -> "deleteFilesWithFlag function is called on " + folderName + " folder");
 
         try {
             File indexOfFiles = new File(folderName);
@@ -23,8 +23,8 @@ public class DeleteFileWithFlag {
             assert entries != null;
 
             for (File f: entries) {
-//                File currentFile = new File(indexOfFiles.getPath(), f);
                 if (f.isDirectory()) return false;
+                logger.log(Level.INFO, () -> "deleting file inside the loop");
                 f.delete();
             }
             indexOfFiles.delete();
@@ -33,6 +33,7 @@ public class DeleteFileWithFlag {
             e.printStackTrace();
             throw e;
         }
+        logger.log(Level.INFO, () -> "returning to main function from deleteFilesWithFlag");
         return true;
     }
 }
