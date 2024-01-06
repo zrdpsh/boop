@@ -7,53 +7,49 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CreateObjectsFromFile {
-    public static void main(String[] args) throws FileNotFoundException, IndexOutOfBoundsException {
-        Logger logger = Logger.getLogger(CreateObjectsFromFile.class.getName());
+    static Logger logger = Logger.getLogger(CreateObjectsFromFile.class.getName());
+    public static void main(String[] args) throws IndexOutOfBoundsException {
+        logger.log(Level.INFO, () -> "main function is called");
+
         try {
             List<Alpaca> newAlpacas = createTheClassesFromSource(WriteToFile.PATHNAME + "working with files\\AlpacaNames.txt");
             Alpaca temp = newAlpacas.get(2);
-            System.out.println(temp.getTheName());
+            logger.log(Level.INFO, "Seems like there is no files out there " + temp.getTheName());
         } catch (IndexOutOfBoundsException e) {
-            logger.log(Level.INFO, "Seems like there is no files out there", e.toString());
-            throw e;
+            logger.log(Level.INFO, () -> "Seems like there is no files out there " + e);
         } catch (Exception e) {
-            logger.log(Level.INFO, "Exception is thrown", e.toString());
-            throw e;
+            logger.log(Level.INFO, () -> "Exception is thrown" + e);
         }
     }
 
     public static List<Alpaca> createTheClassesFromSource(String pathToFile) {
-        Logger logger = Logger.getLogger(CreateObjectsFromFile.class.getName());
+        logger.log(Level.INFO, () -> "createTheClassesFromSource is called with path " + pathToFile);
         ArrayList<Alpaca> result = new ArrayList<>();
 
-        try(BufferedReader br = new BufferedReader(new FileReader(new File(pathToFile)))) {
+        try(BufferedReader br = new BufferedReader(new FileReader(pathToFile))) {
             logger.log(Level.INFO, "Start to create objects from strings: ");
             for (String lineRead = br.readLine(); lineRead != null; lineRead = br.readLine()) {
-
                 result.add(createAlpacaFromString(lineRead));
-                String loggerMessage = String.format("String %s added ", lineRead);
-                logger.log(Level.INFO, loggerMessage);
+                logger.log(Level.INFO, () -> "String " + pathToFile + " is added");
             }
         } catch (Exception e) {
-            logger.log(Level.INFO, "File doesnt read" , e.toString());
+            logger.log(Level.INFO, () -> "File doesnt read" + e);
         }
-
         return result;
     }
 
     public static Alpaca createAlpacaFromString(String rawString) throws IndexOutOfBoundsException {
+        logger.log(Level.INFO, () -> "createAlpacaFromString is called with  " + rawString);
+
         try {
             String[] rawStringSplit = rawString.split(" ");
             return new Alpaca(rawStringSplit[0], Integer.parseInt(rawStringSplit[1]), Integer.parseInt(rawStringSplit[2]));
         } catch (IndexOutOfBoundsException e) {
-            Logger logger = Logger.getLogger(CreateObjectsFromFile.class.getName());
-            logger.log(Level.INFO, "There is some problem with data", e.toString());
-            throw e;
+            logger.log(Level.INFO, () -> "There is some problem with data " + e);
         } catch (Exception e) {
-            Logger logger = Logger.getLogger(CreateObjectsFromFile.class.getName());
-            logger.log(Level.INFO, "There is some problem creating an Alpaca", e.toString());
+            logger.log(Level.INFO, () -> "There is some problem creating an Alpaca" + e);
         }
-
+        logger.log(Level.INFO, () -> "returning to createClassesFromSource");
         return null;
     } //create Alpaca from string function
 
