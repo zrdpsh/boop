@@ -69,6 +69,21 @@ public class SortedArray
 
       int j;
       int a;
+      int run = 0;
+      int runningSum = 0;
+
+      for (int o = 0; o < arr.length; o++) {
+         if (o%2==0) {
+            runningSum += arr[o];
+         } else {
+            runningSum -= arr[o];
+         }
+         int finalRunningSum = runningSum;
+         int finalO = o;
+         logger.log(Level.INFO, () -> "Before sorting loop on the " + finalO + " element running sum equals " + finalRunningSum);
+
+      }
+
 
       logger.log(Level.INFO, () -> "main loop inside sort function to run through the given array:");
       for (int i = 1; i < arr.length; i++) {
@@ -82,11 +97,38 @@ public class SortedArray
             j--;
          }
          arr[j] = a;
+         if (i % 2 == 0) {
+            runningSum+= a;
+         } else {
+            runningSum-= a;
+         }
+         int finalRunningSum = runningSum;
          int finalI = i;
          logger.log(Level.INFO, () -> "After " + finalI + " iteration array is " + Arrays.toString(arr));
          int finalJ = j;
+//         run += j;
+//         int finalRun = run;
          logger.log(Level.INFO, () -> "After " + finalI + " iteration j equals " + finalJ);
+         logger.log(Level.INFO, () -> "After " + finalI + " iteration runningSum equals " + finalRunningSum);
+//         logger.log(Level.INFO, () -> "After " + finalI + " iteration run equals " + finalRun);
       }// for loop inside the sort function
+
+      runningSum = 0;
+
+      for (int o = 0; o < arr.length; o++) {
+         if (o%2==0) {
+            runningSum += arr[o];
+         } else {
+            runningSum -= arr[o];
+         }
+         int finalRunningSum = runningSum;
+         int finalO = o;
+         logger.log(Level.INFO, () -> "After the loop on the " + finalO + " element running sum equals " + finalRunningSum);
+
+      }
+
+      int finalRunningSum = runningSum;
+      logger.log(Level.INFO, () -> "After the loop running sum equals " + finalRunningSum);
 
       assert isSorted(arr): "array isn't sorted";
       assert arr[0]>-1: "temperature is below absolute zero somehow";

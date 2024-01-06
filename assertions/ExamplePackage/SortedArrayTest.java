@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class SortedArrayTest {
     public static final Logger logger = Logger.getLogger(SortedArray.class.getName());
-    public static final int ARRAYLENGTH = 10000;
+    public static final int ARRAYLENGTH = 30;
 
     @Ignore
     public void testSortBasic() {
@@ -117,7 +117,7 @@ public class SortedArrayTest {
     public int[] generateRandomArray(int length) {
         int[] arr = new int[length];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) (Math.random() * (1000000));
+            arr[i] = (int) (Math.random() * (10000));
         }
         return arr;
     } //generate random array function
