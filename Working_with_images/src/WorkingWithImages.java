@@ -20,9 +20,8 @@ public class WorkingWithImages {
     }
 
     public static List<File> returnConvertedImages(String givenFormat, String desiredFormat, int depth, boolean addGraphics) throws IOException {
-        logger.log(Level.INFO, "-------------------------------");
-        logger.log(Level.INFO, "returnConvertedImages is called");
-        logger.log(Level.INFO, "-------------------------------");
+        logger.log(Level.INFO, () -> "returnConvertedImages is called with " + givenFormat + " given format, " + desiredFormat + " desired format, on depth of " + depth);
+        logger.log(Level.INFO, addGraphics?"":"don't" + "add graphics");
 
         ArrayList<File> arrayToTrackNamesOfFolder = new ArrayList<File>();
         ArrayList<File> result  = new ArrayList<>();
@@ -60,9 +59,7 @@ public class WorkingWithImages {
     } //return converted images
 
     private static File resultOfConverting(String nameOfTheGivenFile, String desiredFormat, boolean drawImage) throws IOException {
-        logger.log(Level.INFO, "-------------------------------");
         logger.log(Level.INFO, () -> "getExtension is called with file %s from returnConvertedImages " + nameOfTheGivenFile);
-        logger.log(Level.INFO, "-------------------------------");
 
         File resultingImage;
 
