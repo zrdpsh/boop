@@ -66,7 +66,7 @@ public class WorkingWithMaps {
         logger.log(Level.INFO, () -> "Filtering values exceeding threshold inside the loop:");
 
         for (int e: arrayToFilter) {
-            if (valuesAndFrequencies.containsKey(e)) {
+            if (valuesAndFrequencies.containsKey(e) && !result.contains(e)) {
                 valuesAndFrequencies.put(e, valuesAndFrequencies.get(e)+1);
             } else  {
                 valuesAndFrequencies.put(e, 1);
