@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WorkingWithMaps {
+public class WorkingWithMapN {
     static Logger logger = Logger.getLogger(WorkingWithMaps.class.getName());
     static Random r = new Random();
     static int FILTER_NUMBER = 11;
@@ -15,11 +15,11 @@ public class WorkingWithMaps {
 
         int[] arrayToFilter = generateArrayOfGivenLength(100, 10);
 
-        ArrayList<Integer> filteredArray = filterArrayByHowLargeCombined(arrayToFilter, FILTER_NUMBER);
+        int[] filteredArray = filterArrayByHowLarge(arrayToFilter, FILTER_NUMBER);
 
         for (int e: filteredArray) {
             System.out.print(e + " ");
-            logger.log(Level.INFO, () -> "" + e + " appear in the given array " + FILTER_NUMBER + " times or more");
+            logger.log(Level.INFO, () -> "" + e + " appear in the array at least " + FILTER_NUMBER + " times");
         }
     }// main function
 
@@ -42,7 +42,7 @@ public class WorkingWithMaps {
 
 
         logger.log(Level.INFO, () -> "Pretty print our Map in printValueKeys function");
-        logger.log(Level.INFO,() -> "There are " + howMuch + " pairs in the map");
+        System.out.println("There are " + howMuch + " pairs in the map");
         for (Map.Entry<Integer, Integer> entry : keyValuePairs.entrySet()) {
             int o = entry.getKey();
             System.out.println("" + o + " -> " + entry.getValue() + "");
@@ -55,29 +55,39 @@ public class WorkingWithMaps {
     } //printKeyValuePairs
 
 
-    public static ArrayList<Integer> filterArrayByHowLargeCombined(int[] arrayToFilter, int filterNumber) {
-        logger.log(Level.INFO, () -> "filterArrayByHowLargeCombined is called from MAIN with 2 parameters: ");
+    public static int[] filterArrayByHowLarge(int[] arrayToFilter, int filterNumber) {
+        logger.log(Level.INFO, () -> "filterArrayByHowLarge is called from MAIN  with 2 parameters: ");
         logger.log(Level.INFO, () -> "Array to filter: " + Arrays.toString((arrayToFilter)));
         logger.log(Level.INFO, () -> "Threshold number: " + filterNumber);
 
         Map<Integer, Integer> valuesAndFrequencies = new HashMap<>();
-        ArrayList<Integer> result = new ArrayList<>();
 
-        logger.log(Level.INFO, () -> "Filtering values exceeding threshold inside the loop:");
-
+        logger.log(Level.INFO, () -> "Converting array to value-frequency pairs:");
         for (int e: arrayToFilter) {
-            if (valuesAndFrequencies.containsKey(e)) {
-                valuesAndFrequencies.put(e, valuesAndFrequencies.get(e)+1);
-            } else  {
-                valuesAndFrequencies.put(e, 1);
-                logger.log(Level.INFO, () ->  e + " value is added to map");
-                logger.log(Level.INFO, () -> "filterArrayByHowLarge function");
-            }
-            if (valuesAndFrequencies.get(e) == filterNumber) result.add(e);
-        } //for loop in filterArrayByHowLargeCombined
+            valuesAndFrequencies.put(e, valuesAndFrequencies.get(e)==null? 0 :valuesAndFrequencies.get(e)+1);
+            logger.log(Level.INFO, () ->  e + " is presented " +  valuesAndFrequencies.get(e) + " times");
+            logger.log(Level.INFO, () -> "filterArrayByHowLarge function");
+        }
+        logger.log(Level.INFO, () -> "OK");
 
-        logger.log(Level.INFO, () -> "There are " + result.size() + " values in a given array, that appear at least " + filterNumber + " times");
-        logger.log(Level.INFO, () -> "Filter array by how large is OK. returning to main function");
+        logger.log(Level.INFO, () -> "Filtering map:");
+        Map<Integer, Integer> copy = new HashMap<>(valuesAndFrequencies);
+        for (Map.Entry<Integer, Integer> entry : valuesAndFrequencies.entrySet()) {
+            if (entry.getValue() < filterNumber) copy.remove(entry.getValue());
+        }
+        logger.log(Level.CONFIG, () -> "Map became " + copy.size() + " units long");
+
+        logger.log(Level.INFO, () -> "Converting map to array:");
+        Set<Integer> keys = copy.keySet();
+        Integer[] tmpIntegers = keys.toArray(new Integer[copy.size()]);
+        logger.log(Level.INFO, () -> "OK");
+
+        logger.log(Level.INFO, () -> "Casting from Integer to int:");
+        int[] result = new int[tmpIntegers.length];
+        int i = 0;
+        for (Integer e: tmpIntegers) result[i++] = e;
+        logger.log(Level.INFO, () -> "OK");
+
         return result;
     }//filter array by how large
 
