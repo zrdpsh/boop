@@ -76,7 +76,7 @@ public class WorkingWithMaps {
             if (valuesAndFrequencies.get(e) == filterNumber) result.add(e);
         } //for loop in filterArrayByHowLargeCombined
 
-        logger.log(Level.INFO, () -> "There are " + áresult.size() + " values in a given array, that appear at least " + filterNumber + " times");
+        logger.log(Level.INFO, () -> "There are " + result.size() + " values in a given array, that appear at least " + filterNumber + " times");
         logger.log(Level.INFO, () -> "Filter array by how large is OK. returning to main function");
         return result;
     }//filter array by how large
