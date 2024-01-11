@@ -68,13 +68,15 @@ public class WorkingWithMaps {
         for (int e: arrayToFilter) {
             if (valuesAndFrequencies.get(e) == null) {
                 valuesAndFrequencies.put(e, 1);
-                logger.log(Level.INFO, () ->  e + " value is added to map");
-                logger.log(Level.INFO, () -> "filterArrayByHowLarge function");
+                logger.log(Level.INFO, () ->  e + " is added to map");
             } else {
                 valuesAndFrequencies.put(e, valuesAndFrequencies.get(e)+1);
+                logger.log(Level.INFO, () ->  e + " found one more time");
             }
 
             if (valuesAndFrequencies.get(e) == filterNumber) result.add(e);
+            logger.log(Level.INFO, () ->  e + " is added to final result");
+            logger.log(Level.INFO, () -> "filterArrayByHowLarge function");
         } //for loop in filterArrayByHowLargeCombined
 
         logger.log(Level.INFO, () -> "There are " + result.size() + " values in a given array, that appear at least " + filterNumber + " times");
