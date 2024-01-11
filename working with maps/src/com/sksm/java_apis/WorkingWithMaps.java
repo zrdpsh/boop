@@ -74,8 +74,11 @@ public class WorkingWithMaps {
                 logger.log(Level.INFO, () ->  e + " found one more time");
             }
 
-            if (valuesAndFrequencies.get(e) == filterNumber) result.add(e);
-            logger.log(Level.INFO, () ->  e + " is added to final result");
+            if (valuesAndFrequencies.get(e) == filterNumber) {
+                result.add(e);
+                logger.log(Level.INFO, () ->  e + " is added to final result");
+            }
+
             logger.log(Level.INFO, () -> "filterArrayByHowLarge function");
         } //for loop in filterArrayByHowLargeCombined
 
