@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 public class WorkingWithMaps {
     static Logger logger = Logger.getLogger(WorkingWithMaps.class.getName());
     static Random r = new Random();
-    static int FILTER_NUMBER = 11;
+    static int FILTER_NUMBER = 6;
 
     public static void main(String[] args) {
         logger.log(Level.INFO, () -> "main method started");
@@ -66,13 +66,14 @@ public class WorkingWithMaps {
         logger.log(Level.INFO, () -> "Filtering values exceeding threshold inside the loop:");
 
         for (int e: arrayToFilter) {
-            if (valuesAndFrequencies.containsKey(e)) {
+            if (valuesAndFrequencies.get(e)!= null) {
                 valuesAndFrequencies.put(e, valuesAndFrequencies.get(e)+1);
             } else  {
                 valuesAndFrequencies.put(e, 1);
                 logger.log(Level.INFO, () ->  e + " value is added to map");
                 logger.log(Level.INFO, () -> "filterArrayByHowLarge function");
             }
+
             if (valuesAndFrequencies.get(e) == filterNumber) result.add(e);
         } //for loop in filterArrayByHowLargeCombined
 
