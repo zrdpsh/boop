@@ -55,10 +55,10 @@ public class WorkingWithMaps {
     } //printKeyValuePairs
 
 
-    public static ArrayList<Integer> filterArrayByHowLargeCombined(int[] arrayToFilter, int filterNumber) {
+    public static ArrayList<Integer> filterArrayByHowLargeCombined(int[] arrayToFilter, int thresholdNumber ) {
         logger.log(Level.INFO, () -> "filterArrayByHowLargeCombined is called from MAIN with 2 parameters: ");
         logger.log(Level.INFO, () -> "Array to filter: " + Arrays.toString((arrayToFilter)));
-        logger.log(Level.INFO, () -> "Threshold number: " + filterNumber);
+        logger.log(Level.INFO, () -> "Threshold number: " + thresholdNumber );
 
         Map<Integer, Integer> valuesAndFrequencies = new HashMap<>();
         ArrayList<Integer> result = new ArrayList<>();
@@ -74,7 +74,7 @@ public class WorkingWithMaps {
                 logger.log(Level.INFO, () ->  e + " found one more time");
             }
 
-            if (valuesAndFrequencies.get(e) == filterNumber) {
+            if (valuesAndFrequencies.get(e) == thresholdNumber ) {
                 result.add(e);
                 logger.log(Level.INFO, () ->  e + " is added to final result");
             }
@@ -82,7 +82,7 @@ public class WorkingWithMaps {
             logger.log(Level.INFO, () -> "filterArrayByHowLarge function");
         } //for loop in filterArrayByHowLargeCombined
 
-        logger.log(Level.INFO, () -> "There are " + result.size() + " values in a given array, that appear at least " + filterNumber + " times");
+        logger.log(Level.INFO, () -> "There are " + result.size() + " values in a given array, that appear at least " + thresholdNumber  + " times");
         logger.log(Level.INFO, () -> "Filter array by how large is OK. returning to main function");
         return result;
     }//filter array by how large
