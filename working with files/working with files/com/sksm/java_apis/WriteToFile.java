@@ -26,8 +26,8 @@ public class WriteToFile {
 
       for (int i = 1; i <= howMuchFiles; i++) {
          String name = String.format("%s.txt", i);
-         File nfile = new File(name);
-         try (BufferedWriter bw = new BufferedWriter(new FileWriter(nfile))){
+         File fileToStoreNumbers = new File(name);
+         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileToStoreNumbers))){
             logger.log(Level.INFO, () -> "Writing numbers to file");
             for (int j = 0; j < howMuchContent; j++) {
                int someRandomNumber = (int)(Math.random()*10);
