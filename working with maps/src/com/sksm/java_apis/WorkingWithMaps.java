@@ -19,7 +19,7 @@ public class WorkingWithMaps {
 
         for (int e: filteredArray) {
             System.out.print(e + " ");
-            logger.log(Level.INFO, () -> "" + e + " appear in the given array " + FILTER_NUMBER + " times or more");
+            logger.log(Level.INFO, () -> " " + e + " appear in the given array " + FILTER_NUMBER + " times or more");
         }
     }// main function
 
