@@ -19,7 +19,9 @@ public class WorkingWithImages {
 
     }
 
-    public static List<File> returnConvertedImages(String givenFormat, String desiredFormat, int depth, boolean addGraphics) throws IOException {
+
+    // ..конвертируем изображения, добавляя или не добавляя текст поверх
+    public static List<File> returnConvertedImagesWithGraphics(String givenFormat, String desiredFormat, int depth, boolean addGraphics) throws IOException {
         logger.log(Level.INFO, () -> "returnConvertedImages is called with " + givenFormat + " given format, " + desiredFormat + " desired format, on depth of " + depth);
         logger.log(Level.INFO, addGraphics?"":"don't" + "add graphics");
 
