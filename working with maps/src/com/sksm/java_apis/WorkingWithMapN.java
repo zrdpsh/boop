@@ -54,11 +54,11 @@ public class WorkingWithMapN {
         logger.log(Level.INFO, () -> "PrintKeyValuePairs is finished");
     } //printKeyValuePairs
 
-
-    public static int[] filterArrayByHowLarge(int[] arrayToFilter, int filterNumber) {
+    // ..удаляем из массива все значения меньше заданного
+    public static int[] filterArrayByHowLarge(int[] arrayToFilter, int thresholdNumber) {
         logger.log(Level.INFO, () -> "filterArrayByHowLarge is called from MAIN  with 2 parameters: ");
         logger.log(Level.INFO, () -> "Array to filter: " + Arrays.toString((arrayToFilter)));
-        logger.log(Level.INFO, () -> "Threshold number: " + filterNumber);
+        logger.log(Level.INFO, () -> "Threshold number: " + thresholdNumber);
 
         Map<Integer, Integer> valuesAndFrequencies = new HashMap<>();
 
@@ -73,7 +73,7 @@ public class WorkingWithMapN {
         logger.log(Level.INFO, () -> "Filtering map:");
         Map<Integer, Integer> copy = new HashMap<>(valuesAndFrequencies);
         for (Map.Entry<Integer, Integer> entry : valuesAndFrequencies.entrySet()) {
-            if (entry.getValue() < filterNumber) copy.remove(entry.getValue());
+            if (entry.getValue() < thresholdNumber) copy.remove(entry.getValue());
         }
         logger.log(Level.CONFIG, () -> "Map became " + copy.size() + " units long");
 
