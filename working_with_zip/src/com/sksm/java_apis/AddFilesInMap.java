@@ -30,7 +30,7 @@ public class AddFilesInMap {
         zipEntryMap.forEach((zipEntryName, bytes) -> {
             logger.log(Level.INFO, String.format("%s %s",zipEntryName, Arrays.toString(bytes)));
             try {
-                containAndSaveSameFiles(bytes, zipEntryName, zipOutputStream);
+                addBufferedFilesToArchiveAndSave(bytes, zipEntryName, zipOutputStream);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -56,7 +56,9 @@ public class AddFilesInMap {
         }
         return zipEntryMap;
     }
-    private static void containAndSaveSameFiles(byte[] bytes, String zipEntryName, ZipOutputStream zipOutputStream) throws IOException {
+
+    // ..добавить файлы из буфера в новый архив и записать на диск
+    private static void addBufferedFilesToArchiveAndSave(byte[] bytes, String zipEntryName, ZipOutputStream zipOutputStream) throws IOException {
         ZipEntry zipEntry2 = new ZipEntry(zipEntryName);
         zipEntry2.setSize(bytes.length);
         zipOutputStream.putNextEntry(new ZipEntry(zipEntryName));
