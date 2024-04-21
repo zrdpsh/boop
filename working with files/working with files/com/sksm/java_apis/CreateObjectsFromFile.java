@@ -22,7 +22,8 @@ public class CreateObjectsFromFile {
         }
     }
 
-    public static List<Alpaca> createTheClassesFromSource(String pathToFile) {
+    // ..создаём список объектов на основе перечисленных в файле личных имён
+    public static List<Alpaca> createClassesFromSource(String pathToFile) {
         logger.log(Level.INFO, () -> "createTheClassesFromSource is called with path " + pathToFile);
         ArrayList<Alpaca> result = new ArrayList<>();
 
