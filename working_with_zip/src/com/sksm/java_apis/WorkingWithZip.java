@@ -69,7 +69,7 @@ public class WorkingWithZip {
                 /* ---- здесь в цикле для каждой пары <название-строка байтов> вызываем функцию, чтобы скопировать их в новый архив */
                 logger.log(Level.INFO, zipEntryName+" "+ Arrays.toString(bytes));
                 try {
-                    copyExistingFile_ToTheNewArchive(pathZip, bytes, zipEntryName, zipOutputStream);
+                    copyExistingFileToTheNewArchive(pathZip, bytes, zipEntryName, zipOutputStream);
                     /* ---- отдельный файл из старого архива добавляется в новый архив с тем же именем */
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -130,7 +130,9 @@ public class WorkingWithZip {
 /* ---- возвращаем пары <название - массив байтов> */
     }
 
-    private static void copyExistingFile_ToTheNewArchive(String pathZip, byte[] bytes, String zipEntryName, ZipOutputStream zipOutputStream) throws Exception{
+
+// ..копируем отдельный файл из старого архива в новый архив - с тем же именем
+    private static void copyExistingFileToNewArchive(String pathZip, byte[] bytes, String zipEntryName, ZipOutputStream zipOutputStream) throws Exception{
         ZipEntry zipEntry2nd = new ZipEntry(zipEntryName);
 /* ---- создаем новый ZipEntry из имени файла */
         zipEntry2nd.setSize(bytes.length);
