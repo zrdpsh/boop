@@ -11,7 +11,7 @@ public class Depth_10
      
       ArrayList<File> expand = new ArrayList<File>();
      /* объявить список ArrayList, который называется expand - в него можно записать произвольное количество File" */
-     
+   
       expand.add(root);
      /* добавить в ArrayList File, созданный в первой строчке */
      
