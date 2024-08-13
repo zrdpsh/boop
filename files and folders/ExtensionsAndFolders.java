@@ -24,6 +24,7 @@ public class ExtensionsAndFolders {
             return null;
         });
     }
+    
 
     public static ArrayList[] returnFilesAndFolderNames(String pathToRootFolder, String fileExtension, Boolean inspectDepth) throws FileNotFoundException {
 
